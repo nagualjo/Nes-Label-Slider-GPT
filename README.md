@@ -13,5 +13,9 @@ The main idea is to create a NES Label Slider from scratch, focused on performan
 
 Algunas de las Funciones serán las Siguientes:
 
+Some of the Functions will be the following:
+
+-------------------------------
+
 
 
