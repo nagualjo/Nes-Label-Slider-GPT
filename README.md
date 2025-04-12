@@ -11,6 +11,12 @@ The main idea is to create a NES Label Slider from scratch, focused on performan
 
 -------------------------------
 
+https://youtu.be/czclHcFPeU8?si=UfPwboKNSJtbgNhW
+
+https://youtube.com/playlist?list=PLmfMWYH7Nj0FwavMzZCVX6lTx4F0mGqpq&si=qJpPpOD8D36XHy6z
+
+-------------------------------
+
 Algunas de las Funciones serán las Siguientes:
 
 Some of the Functions will be the following:
