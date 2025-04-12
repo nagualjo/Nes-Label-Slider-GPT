@@ -1,5 +1,5 @@
 # Nes-Label-Slider-GPT
-Nes Label Slider using ESP32 and ChatGPT for Coding it
+Nes Label Slider using ESP32 microcontroller and ChatGPT for Coding it
 
 La idea principal es crear un Nes Label Slider desde 0, enfocado en el Rendimiento bajo una Esp32 y sin conocimientos previos de programación en C, y que incorpore todas las Funciones que deseemos tener en nuestro querido Nes Label Slider
 
