@@ -78,6 +78,43 @@ Volumen ajustable (el MP3-TF-16P permite controlarlo por comandos).
 
 Soporte para múltiples colecciones: por ejemplo, cambiar entre NES, SNES, Sega, etc.
 
+---
+
+ Modo Neo - un toque artístico, funcional y totalmente inesperado al NES Label GPT. Y usarlo como herramienta para mejorar el sueño lo hace aún más especial y personal.
+
+ Es un modo que se activa a la hora de Dormir y de Desactiva automáticamente a la hora de Despertar (back to the matrix) Durante este modo Se paraliza la representación de labels de Juegos y se sustituirá por un Gif animado de Matrix , estableciendo un periodo de Gestión del Sueño o Descanso
+
+Así lo podemos implementar:
+
+1. Modo Neo Manual
+
+Activable desde el menú de configuración.
+
+Reproduce un gif o animación personalizada tipo "código Matrix" (letras verdes en cascada).
+
+Música ambiental suave, ruido blanco, frecuencia de activación REM o silencio total (a elección).
+
+
+2. Modo Neo Automático
+
+Añadimos un módulo RTC (reloj en tiempo real) como el DS3231 o usamos el reloj interno del ESP32 con WiFi/NTP para sincronizar la hora. para disminuir carga de ram Usaremos un conomico módulo rtc de preferencia 3231
+
+Desde el menú se puede configurar:
+
+Hora para empezar el Modo Neo (por ejemplo, 23:00)
+
+Hora para salir del Modo Neo (por ejemplo, 07:00)
+
+
+A esas horas, el sistema cambia automáticamente de modo.
+
+
+
+---
+
+
+
+
 ----------------------------
 
 1. Components:
@@ -133,4 +170,32 @@ Visual themes: Change interface colors or backgrounds.
 Adjustable volume (the MP3-TF-16P allows for command control).
 
 Support for multiple collections: for example, switching between NES, SNES, Sega, etc.
+
+----
+
+Neo Mode - an artistic, functional, and totally unexpected touch to the NES Label GPT. And using it as a tool to improve sleep makes it even more special and personal.
+
+It's a mode that activates at bedtime and automatically deactivates at wake-up time (back to the matrix). During this mode, the display of game labels is paralyzed and replaced by an animated Matrix GIF, establishing a Sleep Management or Rest period.
+
+This is how we can implement it:
+
+1. Manual Neo Mode
+
+Activated from the configuration menu.
+
+Plays a custom GIF or animation like "Matrix code" (cascading green letters).
+
+Soft ambient music, white noise, REM wake-up frequency, or total silence (your choice).
+
+2. Automatic Neo Mode
+
+Add an RTC (real-time clock) module like the DS3231 or use the ESP32's internal clock with WiFi/NTP to synchronize the time. To reduce RAM load, we'll use an economical RTC module, preferably 3231.
+
+From the menu, you can configure:
+
+Time to start Neo Mode (for example, 11:00 PM)
+
+Time to exit Neo Mode (for example, 7:00 AM)
+
+At these times, the system automatically switches modes.
 
