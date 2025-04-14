@@ -4,9 +4,16 @@
 
 NES Label GPT is a project that blends retro charm with modern functionality, allowing you to enjoy NES game covers along with music in an interactive way. With support for .PNG images, .mp3 music playback, touchscreen control, and a full configuration menu, this project delivers a unique experience for fans of classic video games.
 
-The main goal is to create a NES Label Slider completely from scratch, optimized for smooth performance on an ESP32—even without prior knowledge of C programming. All development has been guided and written alongside **ChatGPT**, with a strong focus on performance, stability, and ease of use.
+> The main goal is to create a NES Label Slider completely from scratch, optimized for smooth performance on an ESP32—even without prior knowledge of C programming.  
+> All development has been guided and written alongside **ChatGPT**, with a strong focus on performance, stability, and ease of use.
 
-This project is open to the community: anyone is welcome to join, share ideas, and collaborate. **ChatGPT will bring them to life together with us!**
+This project is open to the community: anyone is welcome to join, share ideas, and collaborate.  
+**ChatGPT will bring them to life together with us!**
+
+---
+
+![GitHub repo size](https://img.shields.io/github/repo-size/nagualjo/nes-label-gpt)
+![GitHub stars](https://img.shields.io/github/stars/nagualjo/nes-label-gpt?style=social)
 
 ---
 
@@ -19,6 +26,8 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 - Brightness control via PWM on GPIO 32.
 - Volume control from the menu.
 - Settings saved in EEPROM (simulated using SPIFFS).
+- Optional real-time clock (RTC) or NTP sync via WiFi.
+- Show/Hide clock toggle (hidden in cover mode, visible in Neo mode).
 - Compatible with 4" TFT screens using the ST7796 controller.
 - Required libraries included.
 
@@ -34,35 +43,38 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 
 ---
 
-## Future Features
-1. **Configurable image timeout**: 
-   Default is 30 seconds, but users will be able to set it in the menu (e.g., 10, 20, 60 seconds). This setting will be saved in EEPROM or in a `.cfg` file.
-
-2. **Random image mode (shuffle)**:
-   We'll use a shuffling algorithm like Fisher-Yates to randomize the image list. This option can be toggled from the menu and stored in the saved settings.
-
-3. Favorite Group images
-   
-4. show other systems like megadrive genesis, snes, msx,, etc
-
-6. help me Choosing and thinkinq another new
-   
----
-
 ## Neo Mode
-An artistic, functional, and unexpected twist to NES Label GPT—also used as a tool to improve sleep. 
-
-During this mode, game cover playback stops and is replaced with a Matrix-style animation (green letters falling), establishing a visual resting period. You can activate it manually or set it to follow a sleep schedule.
+An artistic, functional, and unexpected twist to NES Label GPT—also used as a tool to improve sleep.  
+During this mode, game cover playback stops and is replaced with a Matrix-style animation (green letters falling), establishing a visual resting period.
 
 ### Manual Neo Mode
 - Activated from the configuration menu.
-- Displays a Matrix-like GIF or animation.
-- Optionally plays ambient music, white noise, REM frequency tones, or complete silence.
+- Displays a Matrix-like animation or GIF.
+- Optionally plays ambient music, white noise, REM frequency tones, or silence.
 
 ### Automatic Neo Mode
-- Uses a DS3231 RTC module (preferred for low RAM usage) or ESP32's internal clock with WiFi/NTP.
-- Configurable sleep and wake hours (e.g., 23:00 to 07:00).
+- Uses a DS3231 RTC module or ESP32's internal clock with WiFi/NTP.
+- Configurable sleep/wake hours (e.g., 23:00 to 07:00).
 - System switches automatically at scheduled times.
+
+---
+
+## Future Features
+
+| Feature                             | Status     |
+|-------------------------------------|------------|
+| Configurable image timeout          | Planned    |
+| Random/shuffle image mode           | Planned    |
+| Favorite group image playback       | Planned    |
+| Support for other systems (e.g. SNES, Genesis) | Planned |
+| Neo Mode auto/manual scheduling     | Implemented |
+| Show/hide clock option              | Implemented |
+
+---
+
+## Screenshots
+
+_future screenshots here for better project visualization._
 
 ---
 
@@ -76,10 +88,20 @@ During this mode, game cover playback stops and is replaced with a Matrix-style 
 
 ---
 
+## Acknowledgments
+This project wouldn't be possible without:
+
+- The **open-source** community
+- **PlatformIO / Arduino IDE** developers
+- **ChatGPT**, for the collaborative coding, optimization, and documentation process
+- davidxgames y eolvera85 for their neslbel proyects and su calida atención personal 
+- Everyone watching, sharing, and contributing ideas via GitHub and YouTube
+
+---
+
 Created by [nagualjo](https://github.com/nagualjo) & ChatGPT
 
-[Watch the demo on YouTube](https://youtu.be/czclHcFPeU8?si=UfPwboKNSJtbgNhW)
-
+[Watch the demo on YouTube](https://youtu.be/czclHcFPeU8?si=UfPwboKNSJtbgNhW)  
 [Project playlist](https://youtube.com/playlist?list=PLmfMWYH7Nj0FwavMzZCVX6lTx4F0mGqpq&si=qJpPpOD8D36XHy6z)
 
 ---
@@ -90,9 +112,11 @@ Created by [nagualjo](https://github.com/nagualjo) & ChatGPT
 
 NES Label GPT es un proyecto que combina el encanto retro con funcionalidades modernas, permitiéndote disfrutar de carátulas de juegos NES junto con música de manera interactiva. Con soporte para imágenes .PNG, reproducción de música .mp3, control táctil y un menú de configuración completo, este proyecto ofrece una experiencia única para los amantes de los videojuegos clásicos.
 
-La idea principal es crear un NES Label Slider completamente desde cero, optimizado para un rendimiento fluido en un ESP32, ¡sin necesidad de conocimientos previos de programación en C! Todo el desarrollo ha sido guiado y escrito junto a **ChatGPT**, con enfoque en el rendimiento, estabilidad y facilidad de uso.
+> La idea principal es crear un NES Label Slider completamente desde cero, optimizado para un rendimiento fluido en un ESP32, ¡sin necesidad de conocimientos previos de programación en C!  
+> Todo el desarrollo ha sido guiado y escrito junto a **ChatGPT**, con enfoque en el rendimiento, estabilidad y facilidad de uso.
 
-Este proyecto está abierto a la comunidad: cualquier persona puede participar, compartir ideas y colaborar. **¡ChatGPT las hará realidad junto a nosotros!**
+Este proyecto está abierto a la comunidad: cualquier persona puede participar, compartir ideas y colaborar.  
+**¡ChatGPT las hará realidad junto a nosotros!**
 
 ---
 
@@ -105,6 +129,8 @@ Este proyecto está abierto a la comunidad: cualquier persona puede participar, 
 - Control de brillo mediante PWM en GPIO 32.
 - Control de volumen desde el menú.
 - Configuraciones guardadas en la EEPROM (simulada en SPIFFS).
+- Opción de sincronización de reloj con WiFi/NTP o módulo RTC.
+- Opción de mostrar u ocultar el reloj (oculto en carátulas, visible en modo Neo).
 - Compatible con pantallas TFT de 4" con controlador ST7796.
 - Librerías necesarias incluidas.
 
@@ -120,26 +146,10 @@ Este proyecto está abierto a la comunidad: cualquier persona puede participar, 
 
 ---
 
-## Funciones Futuras
-1. **Tiempo configurable entre imágenes**:
-   El valor por defecto es de 30 segundos, pero el usuario podrá ajustarlo desde el menú (por ejemplo, 10, 20, 60 segundos). Esta configuración se guardará en EEPROM o en un archivo `.cfg`.
-
-2. **Mostrar imágenes aleatoriamente (shuffle)**:
-   Usaremos un algoritmo como Fisher-Yates para mezclar la lista de imágenes. Esta opción se podrá activar/desactivar desde el menú y se almacenará en la configuración.
-
-3. escoger imágenes favoritas para reproducir con mayor frecuencia
-
-4. mostrar otros sistemas (genesis, snes, gameboy,,)
-
-5. ayuda a escoger una nueva función! 
-
-
----
-
 ## Modo Neo
 Un giro artístico, funcional y totalmente inesperado al NES Label GPT—también usado como herramienta para mejorar el sueño.
 
-Durante este modo, se detiene la reproducción de carátulas y se reemplaza por una animación estilo Matrix (letras verdes en cascada), estableciendo un período visual de descanso. Puedes activarlo manualmente o establecer un horario de sueño.
+Durante este modo, se detiene la reproducción de carátulas y se reemplaza por una animación estilo Matrix (letras verdes en cascada), estableciendo un período visual de descanso.
 
 ### Modo Neo Manual
 - Activado desde el menú de configuración.
@@ -147,9 +157,22 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 - Opcionalmente reproduce música ambiental, ruido blanco, tonos REM o silencio total.
 
 ### Modo Neo Automático
-- Usa un módulo RTC DS3231 (preferido por bajo uso de RAM) o el reloj interno del ESP32 con WiFi/NTP.
+- Usa un módulo RTC DS3231 o el reloj interno del ESP32 con WiFi/NTP.
 - Horarios configurables para dormir y despertar (ej: 23:00 a 07:00).
 - El sistema cambia automáticamente de modo en los horarios establecidos.
+
+---
+
+## Funciones Futuras
+
+| Función                               | Estado     |
+|---------------------------------------|------------|
+| Tiempo configurable entre imágenes    | Planeado   |
+| Modo aleatorio para las carátulas     | Planeado   |
+| Grupo de imágenes favoritas           | Planeado   |
+| Mostrar otros sistemas retro          | Planeado   |
+| Programación automática del Modo Neo  | Implementado |
+| Mostrar/Ocultar reloj desde menú      | Implementado |
 
 ---
 
@@ -163,12 +186,19 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 
 ---
 
-Creado por [nagualjo](https://github.com/nagualjo) & ChatGPT
+## Agradecimientos
+Este proyecto no sería posible sin:
 
-[Ver demo en YouTube](https://youtu.be/czclHcFPeU8?si=UfPwboKNSJtbgNhW)
-
-[Lista de reproducción del proyecto](https://youtube.com/playlist?list=PLmfMWYH7Nj0FwavMzZCVX6lTx4F0mGqpq&si=qJpPpOD8D36XHy6z)
+- La comunidad de **código abierto**
+- Los desarrolladores de **PlatformIO / Arduino IDE**
+- **ChatGPT**, por toda la codificación, optimización y documentación
+- davidxgames y eolvera85 x sus respectivos proyectos nes label slider y su calida atención personal 
+-
+- Todos los que ven, comparten o aportan ideas vía GitHub o YouTube
 
 ---
 
+Creado por [nagualjo](https://github.com/nagualjo) & ChatGPT
 
+[Ver demo en YouTube](https://youtu.be/czclHcFPeU8?si=UfPwboKNSJtbgNhW)  
+[Lista de reproducción del proyecto](https://youtube.com/playlist?list=PLmfMWYH7Nj0FwavMzZCVX6lTx4F0mGqpq&si=qJpPpOD8D36XHy6z)
