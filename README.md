@@ -1,3 +1,37 @@
+
+# NES Label GPT - PNG V1
+
+**Donde los sueños se encuentran con la nostalgia**
+
+Este es el proyecto NES Label GPT en su versión con soporte para imágenes .PNG, música .mp3, control por pantalla táctil y un completo menú de configuración. ¡Ideal para disfrutar carátulas de juegos retro con un toque moderno y práctico (Modo Neo incluido)!
+
+## Características
+- Muestra imágenes PNG de carátulas de juegos NES desde la tarjeta SD.
+- Reproduce archivos .mp3 con el módulo DFPlayer Mini.
+- Modo automático con cambio de imagen y música cada 30 segundos.
+- Modo Neo: animación tipo "Matrix" activable por menú o alarma de hora de dormir.
+- Menú de configuración accesible al iniciar o con toque largo en pantalla.
+- Control de brillo mediante PWM en GPIO 32.
+- Control de volumen desde el menú.
+- Configuraciones guardadas en la EEPROM (simulada en SPIFFS).
+- Compatible con pantallas TFT de 4" con controlador ST7796.
+- Librerías necesarias incluidas.
+
+## Conexiones del ESP32
+(Ver archivo conexiones.txt incluido)
+
+## Uso
+1. Copia tus imágenes PNG y archivos MP3 en la microSD (nombrados igual, ej: `zelda.png`, `zelda.mp3`).
+2. Carga el código en el ESP32 con PlatformIO o Arduino IDE.
+3. Disfruta la experiencia NES Label GPT.
+
+---
+Creado por [nagualjo](https://github.com/nagualjo) & ChatGPT
+
+
+
+
+
 # Nes-Label-Slider-GPT
 Nes Label Slider using ESP32 microcontroller and ChatGPT for Coding it
 
