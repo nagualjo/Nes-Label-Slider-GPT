@@ -3,7 +3,7 @@
 
 **Donde los sueños se encuentran con la nostalgia**
 
-Este es el proyecto NES Label GPT en su versión con soporte para imágenes .PNG, música .mp3, control por pantalla táctil y un completo menú de configuración. ¡Ideal para disfrutar carátulas de juegos retro con un toque moderno y práctico (Modo Neo incluido)!
+Este es el proyecto NES Label Slider GPT en su versión con soporte para imágenes .PNG, música .mp3, control por pantalla táctil y un completo menú de configuración. ¡Ideal para disfrutar carátulas de juegos retro con un toque moderno y práctico (Modo Neo incluido)!
 
 ## Características
 - Muestra imágenes PNG de carátulas de juegos NES desde la tarjeta SD.
