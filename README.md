@@ -76,6 +76,9 @@ During this mode, game cover playback stops and is replaced with a Matrix-style 
 
 _future screenshots here for better project visualization._
 
+![Cover Mode](docs/screenshot1.png)
+![Neo Mode](docs/screenshot2.png)
+
 ---
 
 ## Components Used
@@ -173,6 +176,13 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 | Mostrar otros sistemas retro          | Planeado   |
 | Programación automática del Modo Neo  | Implementado |
 | Mostrar/Ocultar reloj desde menú      | Implementado |
+
+---
+
+## Screenshots
+
+![Cover Mode](docs/screenshot1.png)
+![Neo Mode](docs/screenshot2.png)
 
 ---
 
