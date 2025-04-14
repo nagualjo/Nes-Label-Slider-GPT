@@ -1,5 +1,5 @@
 
-# NES Label GPT - PNG V1
+# NES Label GPT -  V1
 
 **Donde los sueños se encuentran con la nostalgia**
 
