@@ -41,6 +41,12 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 2. **Random image mode (shuffle)**:
    We'll use a shuffling algorithm like Fisher-Yates to randomize the image list. This option can be toggled from the menu and stored in the saved settings.
 
+3. Favorite Group images
+   
+4. show other systems like megadrive genesis, snes, msx,, etc
+
+6. help me Choosing and thinkinq another new
+   
 ---
 
 ## Neo Mode
@@ -120,6 +126,13 @@ Este proyecto está abierto a la comunidad: cualquier persona puede participar, 
 
 2. **Mostrar imágenes aleatoriamente (shuffle)**:
    Usaremos un algoritmo como Fisher-Yates para mezclar la lista de imágenes. Esta opción se podrá activar/desactivar desde el menú y se almacenará en la configuración.
+
+3. escoger imágenes favoritas para reproducir con mayor frecuencia
+
+4. mostrar otros sistemas (genesis, snes, gameboy,,)
+
+5. ayuda a escoger una nueva función! 
+
 
 ---
 
