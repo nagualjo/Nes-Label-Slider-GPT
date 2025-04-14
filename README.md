@@ -1,4 +1,4 @@
-# NES Label GPT - V1
+# NES Label GPT - V2
 
 **Where dreams meet nostalgia**
 
@@ -64,7 +64,7 @@ During this mode, game cover playback stops and is replaced with a Matrix-style 
 | Feature                             | Status     |
 |-------------------------------------|------------|
 | Configurable image timeout          | Planned    |
-| Random/shuffle image mode           | Planned    |
+| Random/shuffle image mode           | Implemented    |
 | Favorite group image playback       | Planned    |
 | Support for other systems (e.g. SNES, Genesis) | Planned |
 | Neo Mode auto/manual scheduling     | Implemented |
@@ -171,7 +171,7 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 | Función                               | Estado     |
 |---------------------------------------|------------|
 | Tiempo configurable entre imágenes    | Planeado   |
-| Modo aleatorio para las carátulas     | Planeado   |
+| Modo aleatorio para las carátulas     | Implemented   |
 | Grupo de imágenes favoritas           | Planeado   |
 | Mostrar otros sistemas retro          | Planeado   |
 | Programación automática del Modo Neo  | Implementado |
