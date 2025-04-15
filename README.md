@@ -267,7 +267,7 @@ Visual Studio Code con extensión de Arduino instalada (o Arduino IDE)
 
 Lista de librerías necesarias:
 
-11. TFT_eSPI
+1. TFT_eSPI
 Para el manejo de la pantalla. Configura correctamente el archivo User_Setup.h con tus pines y controlador.
 
 Instalación: desde el Gestor de Librerías Arduino.
