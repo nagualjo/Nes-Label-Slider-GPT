@@ -203,7 +203,7 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 ## Version History
 
 ---
-## NES Label GPT - V1
+### NES Label GPT - V1
 
 Initial Public Release
 
@@ -233,7 +233,7 @@ Initial Public Release
 
 ---
 
-# NES Label GPT - V2
+### NES Label GPT - V2
 
 First Major Upgrade
 
