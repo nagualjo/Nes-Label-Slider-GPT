@@ -207,25 +207,25 @@ NES Label GPT - V1
 
 Initial Public Release
 
-Muestra carátulas NES en formato PNG desde SD.
+- Muestra carátulas NES en formato PNG desde SD.
 
-Reproduce música .mp3 sincronizada desde DFPlayer Mini.
+- Reproduce música .mp3 sincronizada desde DFPlayer Mini.
 
-Cambio automático cada 30 segundos.
+- Cambio automático cada 30 segundos.
 
-Modo Neo básico: animación estilo Matrix activable manualmente.
+- Modo Neo básico: animación estilo Matrix activable manualmente.
 
-Menú de configuración táctil.
+- Menú de configuración táctil.
 
-Brillo controlado por PWM (GPIO 32).
+- Brillo controlado por PWM (GPIO 32).
 
-Volumen ajustable desde el menú.
+- Volumen ajustable desde el menú.
 
-Configuraciones guardadas en SPIFFS simulando EEPROM.
+- Configuraciones guardadas en SPIFFS simulando EEPROM.
 
-Reloj RTC (DS3231) o sincronización por NTP.
+- Reloj RTC (DS3231) o sincronización por NTP.
 
-Código documentado y optimizado para ESP32.
+- Código documentado y optimizado para ESP32.
 
 
 > La primera versión estable y funcional que demuestra el concepto completo del proyecto.
@@ -236,17 +236,17 @@ NES Label GPT - V2
 
 First Major Upgrade
 
-Implementación del modo aleatorio (shuffle) con algoritmo Fisher-Yates para mezcla de imágenes.
+- Implementación del modo aleatorio (shuffle) con algoritmo Fisher-Yates para mezcla de imágenes.
 
-Nueva opción en el menú para activar o desactivar el modo aleatorio.
+- Nueva opción en el menú para activar o desactivar el modo aleatorio.
 
-Estructura reorganizada para una mayor eficiencia y legibilidad.
+- Estructura reorganizada para una mayor eficiencia y legibilidad.
 
-Lógica de imagen y música totalmente sincronizada con reproducción ordenada o aleatoria.
+- Lógica de imagen y música totalmente sincronizada con reproducción ordenada o aleatoria.
 
-Preparado para nuevas expansiones: favoritos, multiconsolas, horarios dinámicos.
+- Preparado para nuevas expansiones: favoritos, multiconsolas, horarios dinámicos.
 
-Revisión profunda y validación del sistema general.
+- Revisión profunda y validación del sistema general.
 
 
 > Una evolución natural hacia un sistema más dinámico, personalizable y robusto. Listo para expandirse y adaptarse.
@@ -264,7 +264,6 @@ Este proyecto no sería posible sin:
 - Los desarrolladores de **PlatformIO / Arduino IDE**
 - **ChatGPT**, por toda la codificación, optimización y documentación
 - davidxgames y eolvera85 x sus respectivos proyectos nes label slider y su calida atención personal 
--
 - Todos los que ven, comparten o aportan ideas vía GitHub o YouTube
 
 ---
