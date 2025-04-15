@@ -196,6 +196,67 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 
 ---
 
+Perfecto, ¡vamos allá! Aquí tienes una sección que puedes añadir al final del README o justo antes del "Componentes Usados". Está dividida por versiones y diseñada para destacar los avances con claridad y orgullo:
+
+
+---
+
+Version History
+
+NES Label GPT - V1
+
+Initial Public Release
+
+Muestra carátulas NES en formato PNG desde SD.
+
+Reproduce música .mp3 sincronizada desde DFPlayer Mini.
+
+Cambio automático cada 30 segundos.
+
+Modo Neo básico: animación estilo Matrix activable manualmente.
+
+Menú de configuración táctil.
+
+Brillo controlado por PWM (GPIO 32).
+
+Volumen ajustable desde el menú.
+
+Configuraciones guardadas en SPIFFS simulando EEPROM.
+
+Reloj RTC (DS3231) o sincronización por NTP.
+
+Código documentado y optimizado para ESP32.
+
+
+> La primera versión estable y funcional que demuestra el concepto completo del proyecto.
+
+
+
+NES Label GPT - V2
+
+First Major Upgrade
+
+Implementación del modo aleatorio (shuffle) con algoritmo Fisher-Yates para mezcla de imágenes.
+
+Nueva opción en el menú para activar o desactivar el modo aleatorio.
+
+Estructura reorganizada para una mayor eficiencia y legibilidad.
+
+Lógica de imagen y música totalmente sincronizada con reproducción ordenada o aleatoria.
+
+Preparado para nuevas expansiones: favoritos, multiconsolas, horarios dinámicos.
+
+Revisión profunda y validación del sistema general.
+
+
+> Una evolución natural hacia un sistema más dinámico, personalizable y robusto. Listo para expandirse y adaptarse.
+
+
+
+---
+
+
+
 ## Agradecimientos
 Este proyecto no sería posible sin:
 
