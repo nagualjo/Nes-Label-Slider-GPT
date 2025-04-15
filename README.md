@@ -186,17 +186,6 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 
 ---
 
-## Componentes Usados
-- ESP32
-- Pantalla táctil de 4" con lector SD integrado
-- Módulo MP3-TF-16P (DFPlayer Mini)
-- Altavoz conectado al MP3-TF-16P
-- Reloj de tiempo real DS3231 (RTC)
-- Imágenes y MP3s en tarjetas SD/microSD
-
----
-
-
 
 ---
 
@@ -228,6 +217,7 @@ Initial Public Release
 - Código documentado y optimizado para ESP32.
 
 
+
 > La primera versión estable y funcional que demuestra el concepto completo del proyecto.
 
 
@@ -250,9 +240,20 @@ First Major Upgrade
 - Revisión profunda y validación del sistema general.
 
 
+
 > Una evolución natural hacia un sistema más dinámico, personalizable y robusto. Listo para expandirse y adaptarse.
 
 
+
+---
+
+## Componentes Usados
+- ESP32
+- Pantalla táctil de 4" con lector SD integrado
+- Módulo MP3-TF-16P (DFPlayer Mini)
+- Altavoz conectado al MP3-TF-16P
+- Reloj de tiempo real DS3231 (RTC)
+- Imágenes y MP3s en tarjetas SD/microSD
 
 ---
 
