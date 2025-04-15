@@ -1,4 +1,4 @@
-# NES Label GPT - V2
+# NES Label GPT - V2.1
 
 **Where dreams meet pixels**
 
