@@ -1,4 +1,4 @@
-# NES Label GPT - V2.1
+(# NES Label GPT - V2.1
 
 **Where dreams meet pixels**
 
@@ -31,35 +31,37 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 - Compatible with 4" TFT screens using the ST7796 controller.
 - Required libraries included.
 
-## ESP32 Pinout
-(See `conexiones.txt` file included in the repository)
-### NES Label GPT – Pinout Connections
+### NES Label GPT - Pinout Table
 
-| **Module**         | **Signal**      | **ESP32 Pin** | **Notes**                             |
-|--------------------|------------------|----------------|----------------------------------------|
-| **Touch Panel**    | T_IRQ            | GPIO 12        | Interrupt                              |
-|                    | T_D0 (DOUT)      | GPIO 19        | SPI MISO (shared)                      |
-|                    | T_DIN (OIN)      | GPIO 23        | SPI MOSI (shared)                      |
-|                    | T_CS             | GPIO 21        | Chip Select                            |
-|                    | T_CLK            | GPIO 18        | SPI SCK (shared with SD)               |
-| **TFT Display**    | LED              | GPIO 32        | Backlight (PWM control)                |
-|                    | SCK              | GPIO 14        | Clock                                  |
-|                    | SDI (MOSI)       | GPIO 13        | Data input                             |
-|                    | DC/RS            | GPIO 2         | Data/Command                           |
-|                    | RESET            | GPIO 4         | Reset                                  |
-|                    | CS               | GPIO 15        | Chip Select                            |
-|                    | GND              | GND            | Shared with MP3 module                 |
-|                    | VCC              | VIN            | Shared with MP3 module                 |
-| **SD Card (on TFT)** | SD_SCK         | GPIO 18        | Shared with T_CLK                      |
-|                    | SD_MISO          | GPIO 19        | Shared with T_D0                       |
-|                    | SD_MOSI          | GPIO 23        | Shared with T_DIN                      |
-|                    | SD_CS            | GPIO 5         | Chip Select                            |
-| **MP3 Module**     | VIN              | VIN            | Shared with TFT                        |
-|                    | TX               | TX2            | Serial Communication                   |
-|                    | RX               | RX2            | Serial Communication                   |
-|                    | B-               | —              | Speaker (-)                            |
-|                    | GND              | GND            | Shared with TFT                        |
-|                    | B+               | —              | Speaker (+)                            |
+| Component        | Signal        | Pin | Notes                            |
+|------------------|---------------|-----|----------------------------------|
+| **Touch Panel**  | T_IRQ         | 12  |                                  |
+|                  | T_D0 (DOUT)   | 19  | Shared SPI MISO                  |
+|                  | T_DIN (OIN)   | 23  | Shared SPI MOSI                  |
+|                  | T_CS          | 21  |                                  |
+|                  | T_CLK         | 18  | Shared SD_SCK                    |
+| **TFT Display**  | LED           | 32  | Brightness control via PWM       |
+|                  | SCK           | 14  |                                  |
+|                  | SDI (MOSI)    | 13  |                                  |
+|                  | DC/RS         | 2   |                                  |
+|                  | RESET         | 4   |                                  |
+|                  | CS            | 15  |                                  |
+|                  | GND           | GND | Shared with MP3 module           |
+|                  | VCC           | VIN | Shared with MP3 module           |
+| **SD Module**    | SD_SCK        | 18  | Shared with T_CLK                |
+| (on TFT)         | SD_MISO       | 19  | Shared with T_D0                 |
+|                  | SD_MOSI       | 23  | Shared with T_DIN                |
+|                  | CS            | 5   |                                  |
+| **MP3 Module**   | VIN           | VIN | Shared with TFT                  |
+|                  | TX2           | 16  |                                  |
+|                  | RX2           | 17  |                                  |
+|                  | B-            | -   | Speaker (-)                      |
+|                  | GND           | GND | Shared with TFT                  |
+|                  | B+            | +   | Speaker (+)                      |
+| **RTC Module**   | SDA           | 25  |                                  |
+|                  | SCL           | 22  |                                  |
+
+(See `conexiones.txt` file included in the repository)
 
 ---
 
@@ -164,8 +166,37 @@ Este proyecto está abierto a la comunidad: cualquier persona puede participar, 
 - Compatible con pantallas TFT de 4" con controlador ST7796.
 - Librerías necesarias incluidas.
 
-## Conexiones del ESP32
+
+### NES Label GPT - Tabla de Conexiones
 (Ver archivo `conexiones.txt` incluido en el repositorio)
+
+| Component        | Signal        | Pin | Notes                            |
+|------------------|---------------|-----|----------------------------------|
+| **Touch Panel**  | T_IRQ         | 12  |                                  |
+|                  | T_D0 (DOUT)   | 19  | Shared SPI MISO                  |
+|                  | T_DIN (OIN)   | 23  | Shared SPI MOSI                  |
+|                  | T_CS          | 21  |                                  |
+|                  | T_CLK         | 18  | Shared SD_SCK                    |
+| **TFT Display**  | LED           | 32  | Brightness control via PWM       |
+|                  | SCK           | 14  |                                  |
+|                  | SDI (MOSI)    | 13  |                                  |
+|                  | DC/RS         | 2   |                                  |
+|                  | RESET         | 4   |                                  |
+|                  | CS            | 15  |                                  |
+|                  | GND           | GND | Shared with MP3 module           |
+|                  | VCC           | VIN | Shared with MP3 module           |
+| **SD Module**    | SD_SCK        | 18  | Shared with T_CLK                |
+| (on TFT)         | SD_MISO       | 19  | Shared with T_D0                 |
+|                  | SD_MOSI       | 23  | Shared with T_DIN                |
+|                  | CS            | 5   |                                  |
+| **MP3 Module**   | VIN           | VIN | Shared with TFT                  |
+|                  | TX2           | 16  |                                  |
+|                  | RX2           | 17  |                                  |
+|                  | B-            | -   | Speaker (-)                      |
+|                  | GND           | GND | Shared with TFT                  |
+|                  | B+            | +   | Speaker (+)                      |
+| **RTC Module**   | SDA           | 25  |                                  |
+|                  | SCL           | 22  |                                  |
 
 ---
 
