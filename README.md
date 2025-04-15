@@ -201,7 +201,7 @@ Perfecto, ¡vamos allá! Aquí tienes una sección que puedes añadir al final d
 
 ---
 
-Version History
+## Version History
 
 NES Label GPT - V1
 
@@ -256,6 +256,78 @@ First Major Upgrade
 ---
 
 
+## Entorno recomendado: 
+
+Visual Studio Code con extensión de Arduino instalada (o Arduino IDE)
+
+
+---
+
+Lista de librerías necesarias:
+
+1. TFT_eSPI
+Para el manejo de la pantalla. Configura correctamente el archivo User_Setup.h con tus pines y controlador.
+
+Instalación: desde el Gestor de Librerías Arduino.
+
+Repositorio: https://github.com/Bodmer/TFT_eSPI
+
+
+
+2. SPIFFS o SD
+Para acceder a los archivos en tarjeta SD o sistema de archivos.
+
+Instalación: Incluido en el núcleo de ESP32.
+
+
+
+3. TouchScreen / XPT2046_Touchscreen (según tu pantalla táctil)
+
+Si tu pantalla usa XPT2046, te recomiendo:
+XPT2046_Touchscreen
+https://github.com/PaulStoffregen/XPT2046_Touchscreen
+
+
+
+4. DFPlayer Mini Mp3 by Makuna
+Para controlar el módulo MP3-TF-16P.
+
+Instalación: desde el Gestor de Librerías Arduino.
+
+Nombre en gestor: DFPlayer Mini Mp3 by Makuna
+
+
+
+5. EEPROM (o preferentemente Preferences de ESP32)
+
+Ya incluido en el core de ESP32 para guardar configuraciones.
+
+
+
+6. Time / NTPClient / DS3231 (si usas reloj interno o externo, según el modo seleccionado)
+
+
+7. Adafruit GFX (solo si alguna librería de pantalla la requiere como dependencia)
+
+
+
+
+---
+
+Configuraciones extra:
+
+En el archivo User_Setup.h de TFT_eSPI, asegúrate de tener bien definidos:
+
+Pines SPI
+
+Controlador (por ejemplo, ILI9341 o ST7789)
+
+Resolución (320x240, 480x320, etc.)
+
+
+---
+
+
 
 ## Agradecimientos
 Este proyecto no sería posible sin:
@@ -272,3 +344,11 @@ Creado por [nagualjo](https://github.com/nagualjo) & ChatGPT
 
 [Ver demo en YouTube](https://youtu.be/czclHcFPeU8?si=UfPwboKNSJtbgNhW)  
 [Lista de reproducción del proyecto](https://youtube.com/playlist?list=PLmfMWYH7Nj0FwavMzZCVX6lTx4F0mGqpq&si=qJpPpOD8D36XHy6z)
+
+
+
+---
+
+
+
+
