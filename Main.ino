@@ -1,8 +1,6 @@
-// NES Label GPT V2.2
-// Donde los sueños se encuentran con la realidad... ¡y ahora también con funciones avanzadas!
+// NES Label GPT V2.2 - Código optimizado y preparado para expansión RTC
+// Donde los sueños se encuentran con la realidad… ¡y ahora también con funciones avanzadas!
 // Autor: nagualjo & ChatGPT
-
-// Código optimizado e integrado con funciones completas
 
 #include <TFT_eSPI.h>
 #include <SPI.h>
@@ -12,22 +10,45 @@
 #include <DFRobotDFPlayerMini.h>
 #include <XPT2046_Touchscreen.h>
 
-// Configuración de pines
+// -------------------------
+// CONFIGURACIÓN DE PINES
+// -------------------------
+
+// MP3
 #define PIN_MP3_RX 16
 #define PIN_MP3_TX 17
+
+// SD
 #define PIN_SD_CS 5
-#define PIN_TOUCH_CS 12
+
+// TOUCH
+#define PIN_TOUCH_CS 21   // T_CS real del chip táctil
+#define PIN_TOUCH_IRQ 12  // T_IRQ: interrupción del touch
+
+// BRILLO TFT
 #define PIN_BRIGHTNESS 32
+
+// RTC (a integrar próximamente)
+#define PIN_RTC_SCL 22
+#define PIN_RTC_SDA 25
+
+// Dimensiones pantalla
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 320
+
+// -------------------------
+// INSTANCIAS DE OBJETOS
+// -------------------------
 
 TFT_eSPI tft = TFT_eSPI();
 HardwareSerial mp3Serial(1);
 DFRobotDFPlayerMini mp3;
+XPT2046_Touchscreen touch(PIN_TOUCH_CS, PIN_TOUCH_IRQ); // Corrección aplicada
 
-XPT2046_Touchscreen touch(PIN_TOUCH_CS);
+// -------------------------
+// VARIABLES GLOBALES
+// -------------------------
 
-// Variables globales
 int currentIndex = 0;
 int numFiles = 0;
 int delayTime = 30000;
@@ -40,7 +61,10 @@ String fileList[1000];
 unsigned long lastChange = 0;
 bool showMenu = false;
 
-// Prototipos
+// -------------------------
+// PROTOTIPOS DE FUNCIONES
+// -------------------------
+
 void loadFileList();
 void shuffleFileList();
 void drawMenu();
@@ -52,6 +76,10 @@ void loadConfig();
 void setBrightness(int val);
 void drawButtons();
 
+// -------------------------
+// SETUP
+// -------------------------
+
 void setup() {
   Serial.begin(115200);
   EEPROM.begin(512);
@@ -59,27 +87,33 @@ void setup() {
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
 
+  // PWM para control de brillo
   pinMode(PIN_BRIGHTNESS, OUTPUT);
   ledcSetup(0, 5000, 8);
   ledcAttachPin(PIN_BRIGHTNESS, 0);
-
   setBrightness(brightness);
 
+  // Inicializar SD
   if (!SD.begin(PIN_SD_CS)) {
     tft.println("Fallo en la SD");
     return;
   }
 
+  // Inicializar MP3
   mp3Serial.begin(9600, SERIAL_8N1, PIN_MP3_RX, PIN_MP3_TX);
   if (mp3.begin(mp3Serial)) {
     mp3.volume(volume);
   }
 
+  // Inicializar Touch
   touch.begin();
+
+  // Cargar configuración y lista de archivos
   loadConfig();
   loadFileList();
   if (shuffleMode) shuffleFileList();
 
+  // Mensaje de bienvenida
   tft.fillScreen(TFT_BLACK);
   tft.setTextSize(2);
   tft.setTextColor(TFT_GREEN);
@@ -88,6 +122,10 @@ void setup() {
   delay(2000);
   tft.fillScreen(TFT_BLACK);
 }
+
+// -------------------------
+// LOOP PRINCIPAL
+// -------------------------
 
 void loop() {
   handleTouch();
@@ -108,6 +146,10 @@ void loop() {
     lastChange = millis();
   }
 }
+
+// -------------------------
+// FUNCIONES CLAVE
+// -------------------------
 
 void loadFileList() {
   File root = SD.open("/covers");
@@ -135,7 +177,6 @@ void shuffleFileList() {
 }
 
 void showImage(String filename) {
-  // Aquí iría la función de mostrar la imagen desde SD
   tft.fillScreen(TFT_BLACK);
   tft.setCursor(20, 150);
   tft.println("Mostrando: " + filename);
@@ -174,8 +215,6 @@ void drawButtons() {
   tft.fillRect(20, 120, 200, 40, TFT_RED);
   tft.setCursor(30, 130);
   tft.print("Aleatorio: "); tft.print(shuffleMode ? "Sí" : "No");
-
-  // Aquí podrías añadir lógica para que el toque en estas zonas cambie valores
 }
 
 void saveConfig() {
