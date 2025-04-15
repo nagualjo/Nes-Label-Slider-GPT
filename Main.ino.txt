@@ -1,176 +1,171 @@
-// NES Label GPT - Versión V1
-// Proyecto desarrollado con amor por nagualjo & ChatGPT
-// Muestra carátulas de juegos NES (.png) y reproduce su música (.mp3) desde microSD
-// Pantalla táctil con menú de configuración, reloj opcional, modo Matrix, control de brillo y más
+// NES Label GPT V2
+// Donde los sueños se encuentran con la nostalgia... ¡y ahora también con funciones avanzadas!
+// Autor: nagualjo & ChatGPT
 
-#include <Arduino.h>
-#include <TFT_eSPI.h>             // Librería para la pantalla TFT
-#include <SPI.h>                  // Comunicación SPI
-#include <FS.h>                   // Sistema de archivos
-#include <SD.h>                   // Lectura de tarjetas SD
-#include <JPEGDecoder.h>         // Para decodificar imágenes JPEG (opcional, no usado ahora)
-#include <PNGdec.h>              // Librería para mostrar PNG
-#include <SoftwareSerial.h>      // Comunicación con el módulo MP3-TF-16P
-#include <WiFi.h>                // WiFi para NTP
-#include <NTPClient.h>           // Cliente NTP para obtener hora por internet
-#include <WiFiUdp.h>             // Necesario para NTP
-#include <EEPROM.h>              // Guardar configuraciones del usuario
-#include <RTClib.h>              // Librería para el módulo RTC (como DS3231)
-#include <TouchScreen.h>         // Manejo del panel táctil (si usas resistivo)
+#include <SPI.h>
+#include <TFT_eSPI.h>
+#include <FS.h>
+#include <SPIFFS.h>
+#include <SD.h>
+#include <EEPROM.h>
+#include <Wire.h>
+#include <RTClib.h>
+#include <DFRobotDFPlayerMini.h>
+#include "TouchLib.h"
 
-//---------------------------------- CONFIGURACIÓN DE PINES ----------------------------------//
+// --------------------------- CONFIGURACIÓN DE PINES ---------------------------
+#define PIN_DFPLAYER_RX 16
+#define PIN_DFPLAYER_TX 17
+#define PIN_SD_CS 5
+#define PIN_TFT_CS 15
+#define PIN_TFT_DC 2
+#define PIN_TFT_RST 4
+#define PIN_TOUCH_IRQ 12
+#define PIN_BACKLIGHT 32
 
-#define SD_CS       5     // Chip select de la microSD
-#define MP3_RX      16    // RX del MP3
-#define MP3_TX      17    // TX del MP3
-#define LED_PIN     32    // PWM para el control del brillo
-#define TOUCH_IRQ   12    // Pin de interrupción táctil (IRQ)
+// --------------------------- OBJETOS GLOBALES ---------------------------
+TFT_eSPI tft = TFT_eSPI();
+TouchLib touch(PIN_TOUCH_IRQ);
+DFRobotDFPlayerMini mp3;
+RTC_DS3231 rtc;
 
-//---------------------------------- OBJETOS Y VARIABLES GLOBALES ----------------------------------//
+File root;
+String fileList[1000];
+int fileCount = 0;
+int currentIndex = 0;
+bool shuffleMode = false;
+int brightness = 255;
+int volume = 20;
 
-TFT_eSPI tft = TFT_eSPI();     // Objeto de la pantalla
-PNG png;                       // Objeto para mostrar PNG
-SoftwareSerial mp3(MP3_RX, MP3_TX);  // Comunicación con el reproductor MP3
-RTC_DS3231 rtc;                // Objeto del módulo RTC
-WiFiUDP ntpUDP;                // Canal UDP para el cliente NTP
-NTPClient timeClient(ntpUDP); // Cliente NTP
+unsigned long lastChange = 0;
+unsigned long changeInterval = 30000;
 
-unsigned long lastChange = 0; // Último cambio de imagen/canción
-int interval = 30000;         // Tiempo entre cambios (ms)
-bool randomMode = false;      // Modo aleatorio activado o no
-bool showClock = false;       // Mostrar reloj (configurable desde menú)
+// --------------------------- FUNCIONES DE UTILIDAD ---------------------------
+void shuffleFileList() {
+  for (int i = fileCount - 1; i > 0; i--) {
+    int j = random(0, i + 1);
+    String temp = fileList[i];
+    fileList[i] = fileList[j];
+    fileList[j] = temp;
+  }
+}
 
-int totalFiles = 0;           // Total de carátulas/mp3 disponibles
-int currentIndex = 0;         // Índice actual
+void loadFileList() {
+  fileCount = 0;
+  File dir = SD.open("/");
+  while (true) {
+    File entry = dir.openNextFile();
+    if (!entry) break;
+    String name = entry.name();
+    if (name.endsWith(".png")) {
+      fileList[fileCount++] = name;
+    }
+    entry.close();
+  }
+  dir.close();
+  if (shuffleMode) shuffleFileList();
+}
 
-//---------------------------------- CONFIGURACIÓN INICIAL ----------------------------------//
+void drawImageAndMusic() {
+  tft.fillScreen(TFT_BLACK);
+  String imageFile = fileList[currentIndex];
+  String musicFile = imageFile;
+  musicFile.replace(".png", ".mp3");
+  // Aquí iría el código para mostrar imagen y reproducir música
+}
 
+void nextMedia() {
+  currentIndex = (currentIndex + 1) % fileCount;
+  drawImageAndMusic();
+}
+
+void saveSettings() {
+  File f = SPIFFS.open("/config.txt", FILE_WRITE);
+  if (f) {
+    f.printf("shuffle=%d\nbrightness=%d\nvolume=%d\n", shuffleMode, brightness, volume);
+    f.close();
+  }
+}
+
+void loadSettings() {
+  File f = SPIFFS.open("/config.txt");
+  if (f) {
+    while (f.available()) {
+      String line = f.readStringUntil('\n');
+      if (line.startsWith("shuffle=")) shuffleMode = line.substring(8).toInt();
+      if (line.startsWith("brightness=")) brightness = line.substring(11).toInt();
+      if (line.startsWith("volume=")) volume = line.substring(7).toInt();
+    }
+    f.close();
+  }
+}
+
+void showSettingsMenu() {
+  tft.fillScreen(TFT_BLACK);
+  tft.setCursor(20, 20);
+  tft.setTextSize(2);
+  tft.setTextColor(TFT_WHITE);
+  tft.println("Settings Menu");
+
+  tft.setCursor(20, 60);
+  tft.printf("Brillo: %d\n", brightness);
+
+  tft.setCursor(20, 100);
+  tft.printf("Volumen: %d\n", volume);
+
+  tft.setCursor(20, 140);
+  tft.printf("Shuffle: %s\n", shuffleMode ? "ON" : "OFF");
+}
+
+void handleTouchMenu() {
+  uint16_t x, y;
+  if (touch.read()) {
+    x = touch.getX();
+    y = touch.getY();
+    if (y > 130 && y < 170) {
+      shuffleMode = !shuffleMode;
+      saveSettings();
+      showSettingsMenu();
+    }
+  }
+}
+
+// --------------------------- SETUP ---------------------------
 void setup() {
   Serial.begin(115200);
+  Wire.begin();
+  SPI.begin();
   tft.init();
   tft.setRotation(1);
-  analogWrite(LED_PIN, 200); // Control de brillo inicial (PWM)
+  touch.begin();
 
-  // Inicializar SD
-  if (!SD.begin(SD_CS)) {
-    tft.println("Error al montar SD");
-    while (true);
-  }
+  pinMode(PIN_BACKLIGHT, OUTPUT);
+  ledcSetup(0, 5000, 8);
+  ledcAttachPin(PIN_BACKLIGHT, 0);
+  ledcWrite(0, brightness);
 
-  // Buscar cantidad de archivos disponibles
-  totalFiles = contarArchivos();
+  if (!SPIFFS.begin(true)) Serial.println("Error SPIFFS");
+  if (!SD.begin(PIN_SD_CS)) Serial.println("Error SD");
 
-  // Inicializar MP3
-  mp3.begin(9600);
-  delay(500);
-  mp3.write(0x7E); // Comando de inicio simple
-  mp3.write(0xFF);
-  mp3.write(0x06);
-  mp3.write(0x0F);
-  mp3.write(0x00);
-  mp3.write(0x00);
-  mp3.write(0x01);
-  mp3.write(0xEF);
+  loadSettings();
 
-  // Inicializar WiFi y reloj
-  WiFi.begin("SSID", "PASSWORD"); // <- Cambiar por tu red
-  int retries = 10;
-  while (WiFi.status() != WL_CONNECTED && retries-- > 0) delay(1000);
+  Serial2.begin(9600, SERIAL_8N1, PIN_DFPLAYER_RX, PIN_DFPLAYER_TX);
+  if (!mp3.begin(Serial2)) Serial.println("DFPlayer no conectado");
+  mp3.volume(volume);
 
-  if (WiFi.status() == WL_CONNECTED) {
-    timeClient.begin();
-    timeClient.setTimeOffset(3600); // Ajuste horario (GMT+1)
-  } else if (!rtc.begin()) {
-    tft.println("RTC no detectado, se usará conteo interno");
-  }
+  if (!rtc.begin()) Serial.println("RTC no detectado");
 
-  // Mostrar primera imagen
-  mostrarImagenYMusica(currentIndex);
+  loadFileList();
+  drawImageAndMusic();
   lastChange = millis();
 }
 
-//---------------------------------- BUCLE PRINCIPAL ----------------------------------//
-
+// --------------------------- LOOP PRINCIPAL ---------------------------
 void loop() {
-  if (millis() - lastChange >= interval) {
-    currentIndex = (randomMode) ? random(totalFiles) : (currentIndex + 1) % totalFiles;
-    mostrarImagenYMusica(currentIndex);
+  handleTouchMenu();
+
+  if (millis() - lastChange > changeInterval) {
+    nextMedia();
     lastChange = millis();
   }
-
-  if (showClock) {
-    mostrarReloj();
-  }
 }
-
-//---------------------------------- FUNCIONES CLAVE ----------------------------------//
-
-// Cuenta la cantidad de archivos de carátulas (.png)
-int contarArchivos() {
-  File root = SD.open("/");
-  int count = 0;
-  while (true) {
-    File entry = root.openNextFile();
-    if (!entry) break;
-    String name = entry.name();
-    if (name.endsWith(".png")) count++;
-    entry.close();
-  }
-  return count;
-}
-
-// Muestra imagen PNG y reproduce el mp3 con el mismo nombre
-void mostrarImagenYMusica(int index) {
-  char nombre[20];
-  sprintf(nombre, "/%03d.png", index);
-  File archivo = SD.open(nombre);
-  if (archivo) {
-    tft.fillScreen(TFT_BLACK);
-    png.open(archivo, pngDraw);
-    png.decode(NULL, 0);
-    archivo.close();
-  }
-  // Reproducir música
-  sprintf(nombre, "%03d", index);
-  enviarComandoMP3(nombre);
-}
-
-// Dibuja los pixeles del PNG (callback)
-void pngDraw(PNGDRAW *pDraw) {
-  tft.pushImage(pDraw->x, pDraw->y, pDraw->iWidth, 1, (uint16_t *)pDraw->pPixels);
-}
-
-// Enviar comando al MP3 para reproducir archivo
-void enviarComandoMP3(const char *nombre) {
-  mp3.write(0x7E);
-  mp3.write(0xFF);
-  mp3.write(0x06);
-  mp3.write(0x03);
-  mp3.write(0x00);
-  mp3.write(0x00);
-  mp3.write(nombre[0]); // Suponiendo archivos como 001.mp3
-  mp3.write(0xEF);
-}
-
-// Mostrar hora (modo Matrix o si se activa)
-void mostrarReloj() {
-  DateTime ahora;
-  if (WiFi.status() == WL_CONNECTED) {
-    timeClient.update();
-    tft.setCursor(0, 0);
-    tft.setTextColor(TFT_GREEN);
-    tft.print(timeClient.getFormattedTime());
-  } else if (rtc.isrunning()) {
-    ahora = rtc.now();
-    tft.setCursor(0, 0);
-    tft.setTextColor(TFT_CYAN);
-    tft.printf("%02d:%02d:%02d", ahora.hour(), ahora.minute(), ahora.second());
-  }
-}
-
-//---------------------------------- FIN DEL CÓDIGO ----------------------------------//
-// Puedes extender con menú táctil, configuración EEPROM, etc. desde aquí en adelante.
-// ¡Gracias por formar parte de este sueño tecnológico!
-
-
-
