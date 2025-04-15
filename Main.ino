@@ -1,171 +1,189 @@
-// NES Label GPT V2
-// Donde los sueños se encuentran con la nostalgia... ¡y ahora también con funciones avanzadas!
+// NES Label GPT V2.1
+// Donde los sueños se encuentran con la realidad... ¡y ahora también con funciones avanzadas!
 // Autor: nagualjo & ChatGPT
 
+
+
+#include <Arduino.h>
 #include <SPI.h>
-#include <TFT_eSPI.h>
-#include <FS.h>
-#include <SPIFFS.h>
 #include <SD.h>
+#include <TFT_eSPI.h>
+#include <JPEGDecoder.h>
+#include <TouchScreen.h>
 #include <EEPROM.h>
-#include <Wire.h>
+#include <DFMiniMp3.h>
+#include <WiFi.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 #include <RTClib.h>
-#include <DFRobotDFPlayerMini.h>
-#include "TouchLib.h"
 
-// --------------------------- CONFIGURACIÓN DE PINES ---------------------------
-#define PIN_DFPLAYER_RX 16
-#define PIN_DFPLAYER_TX 17
-#define PIN_SD_CS 5
-#define PIN_TFT_CS 15
-#define PIN_TFT_DC 2
-#define PIN_TFT_RST 4
-#define PIN_TOUCH_IRQ 12
-#define PIN_BACKLIGHT 32
-
-// --------------------------- OBJETOS GLOBALES ---------------------------
+// --- Configuración de Pines y Objetos ---
 TFT_eSPI tft = TFT_eSPI();
-TouchLib touch(PIN_TOUCH_IRQ);
-DFRobotDFPlayerMini mp3;
-RTC_DS3231 rtc;
+TouchScreen ts = TouchScreen(); // Ajusta según tu hardware
 
-File root;
-String fileList[1000];
-int fileCount = 0;
-int currentIndex = 0;
-bool shuffleMode = false;
-int brightness = 255;
-int volume = 20;
+#define PIN_MP3_RX 16
+#define PIN_MP3_TX 17
+#define PIN_SD_CS 5
+#define PIN_PWM_BACKLIGHT 32
+#define PIN_TOUCH_IRQ 12
 
-unsigned long lastChange = 0;
-unsigned long changeInterval = 30000;
+// --- Variables Globales ---
+int brillo = 128;              // Valor PWM 0-255
+int volumen = 20;              // Valor 0-30
+int tiempoEspera = 30;         // En segundos
+bool modoAleatorio = false;
+bool mostrarReloj = false;
 
-// --------------------------- FUNCIONES DE UTILIDAD ---------------------------
-void shuffleFileList() {
-  for (int i = fileCount - 1; i > 0; i--) {
-    int j = random(0, i + 1);
-    String temp = fileList[i];
-    fileList[i] = fileList[j];
-    fileList[j] = temp;
+// --- Variables para imágenes y música ---
+std::vector<String> archivosImagenes;
+int indiceActual = 0;
+unsigned long ultimoCambio = 0;
+bool enMenu = false;
+
+// --- Configuración EEPROM ---
+struct Configuracion {
+  int brillo;
+  int volumen;
+  int tiempoEspera;
+  bool modoAleatorio;
+  bool mostrarReloj;
+};
+
+Configuracion config;
+
+// --- Inicialización del PWM para brillo ---
+void configurarBrilloPWM() {
+  ledcSetup(0, 5000, 8);
+  ledcAttachPin(PIN_PWM_BACKLIGHT, 0);
+  ledcWrite(0, brillo);
+}
+
+// --- Guardar y cargar configuración ---
+void guardarConfiguracion() {
+  EEPROM.put(0, config);
+  EEPROM.commit();
+}
+
+void cargarConfiguracion() {
+  EEPROM.get(0, config);
+  brillo = config.brillo;
+  volumen = config.volumen;
+  tiempoEspera = config.tiempoEspera;
+  modoAleatorio = config.modoAleatorio;
+  mostrarReloj = config.mostrarReloj;
+}
+
+// --- Función para mezclar los archivos si está activo modo aleatorio ---
+void mezclarArchivos() {
+  if (!modoAleatorio) return;
+  for (int i = archivosImagenes.size() - 1; i > 0; i--) {
+    int j = random(i + 1);
+    std::swap(archivosImagenes[i], archivosImagenes[j]);
   }
 }
 
-void loadFileList() {
-  fileCount = 0;
+// --- Cargar archivos desde SD ---
+void cargarArchivos() {
   File dir = SD.open("/");
+  archivosImagenes.clear();
   while (true) {
     File entry = dir.openNextFile();
     if (!entry) break;
     String name = entry.name();
-    if (name.endsWith(".png")) {
-      fileList[fileCount++] = name;
-    }
+    if (name.endsWith(".png")) archivosImagenes.push_back(name);
     entry.close();
   }
-  dir.close();
-  if (shuffleMode) shuffleFileList();
+  mezclarArchivos();
 }
 
-void drawImageAndMusic() {
+// --- Mostrar imagen en pantalla ---
+void mostrarImagen(String filename) {
   tft.fillScreen(TFT_BLACK);
-  String imageFile = fileList[currentIndex];
-  String musicFile = imageFile;
-  musicFile.replace(".png", ".mp3");
-  // Aquí iría el código para mostrar imagen y reproducir música
+  tft.drawString("Mostrando: " + filename, 10, 10); // Sustituir con renderizado real
+  // Código de carga real del PNG omitido aquí por brevedad
 }
 
-void nextMedia() {
-  currentIndex = (currentIndex + 1) % fileCount;
-  drawImageAndMusic();
+// --- Reproducir música ---
+void reproducirMusica(String filename) {
+  // Asume que el nombre del archivo MP3 coincide con el PNG
+  // mp3.play(filename);
 }
 
-void saveSettings() {
-  File f = SPIFFS.open("/config.txt", FILE_WRITE);
-  if (f) {
-    f.printf("shuffle=%d\nbrightness=%d\nvolume=%d\n", shuffleMode, brightness, volume);
-    f.close();
-  }
-}
-
-void loadSettings() {
-  File f = SPIFFS.open("/config.txt");
-  if (f) {
-    while (f.available()) {
-      String line = f.readStringUntil('\n');
-      if (line.startsWith("shuffle=")) shuffleMode = line.substring(8).toInt();
-      if (line.startsWith("brightness=")) brightness = line.substring(11).toInt();
-      if (line.startsWith("volume=")) volume = line.substring(7).toInt();
-    }
-    f.close();
-  }
-}
-
-void showSettingsMenu() {
-  tft.fillScreen(TFT_BLACK);
-  tft.setCursor(20, 20);
-  tft.setTextSize(2);
+// --- Dibujar menú táctil interactivo ---
+void mostrarMenuConfiguracion() {
+  enMenu = true;
+  tft.fillScreen(TFT_NAVY);
   tft.setTextColor(TFT_WHITE);
-  tft.println("Settings Menu");
+  tft.setTextSize(2);
+  tft.drawString("Configuracion NES Label GPT", 20, 10);
 
-  tft.setCursor(20, 60);
-  tft.printf("Brillo: %d\n", brightness);
+  // Botones de brillo
+  tft.drawString("Brillo -", 20, 50);
+  tft.drawString("Brillo +", 150, 50);
 
-  tft.setCursor(20, 100);
-  tft.printf("Volumen: %d\n", volume);
+  // Botones de volumen
+  tft.drawString("Volumen -", 20, 90);
+  tft.drawString("Volumen +", 150, 90);
 
-  tft.setCursor(20, 140);
-  tft.printf("Shuffle: %s\n", shuffleMode ? "ON" : "OFF");
+  // Botón de modo aleatorio
+  tft.drawString(modoAleatorio ? "Aleatorio: ON" : "Aleatorio: OFF", 20, 130);
+
+  // Botón salir
+  tft.drawString("Salir", 20, 180);
 }
 
-void handleTouchMenu() {
-  uint16_t x, y;
-  if (touch.read()) {
-    x = touch.getX();
-    y = touch.getY();
-    if (y > 130 && y < 170) {
-      shuffleMode = !shuffleMode;
-      saveSettings();
-      showSettingsMenu();
-    }
+// --- Manejar interacción táctil en menú ---
+void manejarToqueMenu(int x, int y) {
+  if (y > 50 && y < 70) {
+    if (x < 100) brillo = max(0, brillo - 20);
+    else brillo = min(255, brillo + 20);
+  } else if (y > 90 && y < 110) {
+    if (x < 100) volumen = max(0, volumen - 1);
+    else volumen = min(30, volumen + 1);
+  } else if (y > 130 && y < 150) {
+    modoAleatorio = !modoAleatorio;
+  } else if (y > 180 && y < 200) {
+    // Guardar y salir del menú
+    config.brillo = brillo;
+    config.volumen = volumen;
+    config.modoAleatorio = modoAleatorio;
+    guardarConfiguracion();
+    configurarBrilloPWM();
+    cargarArchivos();
+    enMenu = false;
   }
+  if (enMenu) mostrarMenuConfiguracion();
 }
 
-// --------------------------- SETUP ---------------------------
+// --- Setup ---
 void setup() {
   Serial.begin(115200);
-  Wire.begin();
-  SPI.begin();
-  tft.init();
+  EEPROM.begin(512);
+  cargarConfiguracion();
+  configurarBrilloPWM();
+
+  tft.begin();
   tft.setRotation(1);
-  touch.begin();
-
-  pinMode(PIN_BACKLIGHT, OUTPUT);
-  ledcSetup(0, 5000, 8);
-  ledcAttachPin(PIN_BACKLIGHT, 0);
-  ledcWrite(0, brightness);
-
-  if (!SPIFFS.begin(true)) Serial.println("Error SPIFFS");
-  if (!SD.begin(PIN_SD_CS)) Serial.println("Error SD");
-
-  loadSettings();
-
-  Serial2.begin(9600, SERIAL_8N1, PIN_DFPLAYER_RX, PIN_DFPLAYER_TX);
-  if (!mp3.begin(Serial2)) Serial.println("DFPlayer no conectado");
-  mp3.volume(volume);
-
-  if (!rtc.begin()) Serial.println("RTC no detectado");
-
-  loadFileList();
-  drawImageAndMusic();
-  lastChange = millis();
+  SD.begin(PIN_SD_CS);
+  cargarArchivos();
+  mostrarMenuConfiguracion();
 }
 
-// --------------------------- LOOP PRINCIPAL ---------------------------
+// --- Loop principal ---
 void loop() {
-  handleTouchMenu();
-
-  if (millis() - lastChange > changeInterval) {
-    nextMedia();
-    lastChange = millis();
+  if (enMenu) {
+    if (ts.touched()) {
+      TSPoint p = ts.getPoint();
+      manejarToqueMenu(p.x, p.y);
+    }
+    delay(100);
+    return;
   }
-}
+
+  if (millis() - ultimoCambio > (tiempoEspera * 1000)) {
+    mostrarImagen(archivosImagenes[indiceActual]);
+    reproducirMusica(archivosImagenes[indiceActual]);
+    indiceActual = (indiceActual + 1) % archivosImagenes.size();
+    ultimoCambio = millis();
+  }
+}  
