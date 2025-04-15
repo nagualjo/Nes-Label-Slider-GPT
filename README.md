@@ -35,7 +35,7 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 
 | Component        | Signal        | Pin | Notes                            |
 |------------------|---------------|-----|----------------------------------|
-| **Touch Panel**  | T_IRQ         | 12  |                                  |
+| **Touch Panel**  | T_IRQ         |  27  |      solving bug                            |
 |                  | T_D0 (DOUT)   | 19  | Shared SPI MISO                  |
 |                  | T_DIN (OIN)   | 23  | Shared SPI MOSI                  |
 |                  | T_CS          | 21  |                                  |
@@ -172,7 +172,7 @@ Este proyecto está abierto a la comunidad: cualquier persona puede participar, 
 
 | Component        | Signal        | Pin | Notes                            |
 |------------------|---------------|-----|----------------------------------|
-| **Touch Panel**  | T_IRQ         | 12  |                                  |
+| **Touch Panel**  | T_IRQ         |  27  |                                  |
 |                  | T_D0 (DOUT)   | 19  | Shared SPI MISO                  |
 |                  | T_DIN (OIN)   | 23  | Shared SPI MOSI                  |
 |                  | T_CS          | 21  |                                  |
