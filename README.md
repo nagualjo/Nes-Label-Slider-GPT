@@ -33,6 +33,33 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 
 ## ESP32 Pinout
 (See `conexiones.txt` file included in the repository)
+### NES Label GPT – Pinout Connections
+
+| **Module**         | **Signal**      | **ESP32 Pin** | **Notes**                             |
+|--------------------|------------------|----------------|----------------------------------------|
+| **Touch Panel**    | T_IRQ            | GPIO 12        | Interrupt                              |
+|                    | T_D0 (DOUT)      | GPIO 19        | SPI MISO (shared)                      |
+|                    | T_DIN (OIN)      | GPIO 23        | SPI MOSI (shared)                      |
+|                    | T_CS             | GPIO 21        | Chip Select                            |
+|                    | T_CLK            | GPIO 18        | SPI SCK (shared with SD)               |
+| **TFT Display**    | LED              | GPIO 32        | Backlight (PWM control)                |
+|                    | SCK              | GPIO 14        | Clock                                  |
+|                    | SDI (MOSI)       | GPIO 13        | Data input                             |
+|                    | DC/RS            | GPIO 2         | Data/Command                           |
+|                    | RESET            | GPIO 4         | Reset                                  |
+|                    | CS               | GPIO 15        | Chip Select                            |
+|                    | GND              | GND            | Shared with MP3 module                 |
+|                    | VCC              | VIN            | Shared with MP3 module                 |
+| **SD Card (on TFT)** | SD_SCK         | GPIO 18        | Shared with T_CLK                      |
+|                    | SD_MISO          | GPIO 19        | Shared with T_D0                       |
+|                    | SD_MOSI          | GPIO 23        | Shared with T_DIN                      |
+|                    | SD_CS            | GPIO 5         | Chip Select                            |
+| **MP3 Module**     | VIN              | VIN            | Shared with TFT                        |
+|                    | TX               | TX2            | Serial Communication                   |
+|                    | RX               | RX2            | Serial Communication                   |
+|                    | B-               | —              | Speaker (-)                            |
+|                    | GND              | GND            | Shared with TFT                        |
+|                    | B+               | —              | Speaker (+)                            |
 
 ---
 
