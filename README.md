@@ -12,8 +12,8 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 
 ---
 
-![GitHub repo size](https://img.shields.io/github/repo-size/nagualjo/nes-label-gpt)
-![GitHub stars](https://img.shields.io/github/stars/nagualjo/nes-label-gpt?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/nagualjo/nes-label-slider-gpt)
+![GitHub stars](https://img.shields.io/github/stars/nagualjo/nes-label-slider-gpt?style=social)
 
 ---
 
