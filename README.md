@@ -196,14 +196,14 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 
 ---
 
-Perfecto, ¡vamos allá! Aquí tienes una sección que puedes añadir al final del README o justo antes del "Componentes Usados". Está dividida por versiones y diseñada para destacar los avances con claridad y orgullo:
 
 
 ---
 
 ## Version History
 
-NES Label GPT - V1
+---
+## NES Label GPT - V1
 
 Initial Public Release
 
@@ -231,8 +231,9 @@ Initial Public Release
 > La primera versión estable y funcional que demuestra el concepto completo del proyecto.
 
 
+---
 
-NES Label GPT - V2
+# NES Label GPT - V2
 
 First Major Upgrade
 
@@ -265,7 +266,7 @@ Visual Studio Code con extensión de Arduino instalada (o Arduino IDE)
 
 Lista de librerías necesarias:
 
-1. TFT_eSPI
+- 1. TFT_eSPI
 Para el manejo de la pantalla. Configura correctamente el archivo User_Setup.h con tus pines y controlador.
 
 Instalación: desde el Gestor de Librerías Arduino.
@@ -274,14 +275,14 @@ Repositorio: https://github.com/Bodmer/TFT_eSPI
 
 
 
-2. SPIFFS o SD
+- 2. SPIFFS o SD
 Para acceder a los archivos en tarjeta SD o sistema de archivos.
 
 Instalación: Incluido en el núcleo de ESP32.
 
 
 
-3. TouchScreen / XPT2046_Touchscreen (según tu pantalla táctil)
+- 3. TouchScreen / XPT2046_Touchscreen (según tu pantalla táctil)
 
 Si tu pantalla usa XPT2046, te recomiendo:
 XPT2046_Touchscreen
@@ -289,7 +290,7 @@ https://github.com/PaulStoffregen/XPT2046_Touchscreen
 
 
 
-4. DFPlayer Mini Mp3 by Makuna
+- 4. DFPlayer Mini Mp3 by Makuna
 Para controlar el módulo MP3-TF-16P.
 
 Instalación: desde el Gestor de Librerías Arduino.
@@ -298,16 +299,16 @@ Nombre en gestor: DFPlayer Mini Mp3 by Makuna
 
 
 
-5. EEPROM (o preferentemente Preferences de ESP32)
+- 5. EEPROM (o preferentemente Preferences de ESP32)
 
 Ya incluido en el core de ESP32 para guardar configuraciones.
 
 
 
-6. Time / NTPClient / DS3231 (si usas reloj interno o externo, según el modo seleccionado)
+- 6. Time / NTPClient / DS3231 (si usas reloj interno o externo, según el modo seleccionado)
 
 
-7. Adafruit GFX (solo si alguna librería de pantalla la requiere como dependencia)
+- 7. Adafruit GFX (solo si alguna librería de pantalla la requiere como dependencia)
 
 
 
