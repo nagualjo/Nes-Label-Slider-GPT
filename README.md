@@ -1,6 +1,6 @@
 # NES Label GPT - V2
 
-**Where dreams meet nostalgia**
+**Where dreams meet pixels**
 
 NES Label GPT is a project that blends retro charm with modern functionality, allowing you to enjoy NES game covers along with music in an interactive way. With support for .PNG images, .mp3 music playback, touchscreen control, and a full configuration menu, this project delivers a unique experience for fans of classic video games.
 
