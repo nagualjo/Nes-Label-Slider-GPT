@@ -268,8 +268,8 @@ Visual Studio Code con extensión de Arduino instalada (o Arduino IDE)
 Lista de librerías necesarias:
 
 1. TFT_eSPI
-    Para el manejo de la pantalla.
-     Configura correctamente el archivo User_Setup.h con tus pines y controlador.
+   
+     Para el manejo de la pantalla. Configura correctamente el archivo User_Setup.h con tus pines y controlador.
 
      Instalación: desde el Gestor de Librerías Arduino.
 
@@ -278,13 +278,14 @@ Lista de librerías necesarias:
 
 
 3. SPIFFS o SD
+   
     Para acceder a los archivos en tarjeta SD o sistema de archivos.
 
     Instalación: Incluido en el núcleo de ESP32.
 
 
 
-4. TouchScreen / XPT2046_Touchscreen (según tu pantalla táctil)
+5. TouchScreen / XPT2046_Touchscreen (según tu pantalla táctil)
 
     Si tu pantalla usa XPT2046, te recomiendo:
     XPT2046_Touchscreen
@@ -292,7 +293,8 @@ Lista de librerías necesarias:
 
 
 
-5. DFPlayer Mini Mp3 by Makuna
+6. DFPlayer Mini Mp3 by Makuna
+   
     Para controlar el módulo MP3-TF-16P.
 
     Instalación: desde el Gestor de Librerías Arduino.
@@ -301,15 +303,15 @@ Lista de librerías necesarias:
 
 
 
-6. EEPROM (o preferentemente Preferences de ESP32)
+7. EEPROM (o preferentemente Preferences de ESP32)
 
     Ya incluido en el core de ESP32 para guardar configuraciones.
 
 
-7. Time / NTPClient / DS3231 (si usas reloj interno o externo, según el modo seleccionado)
+8. Time / NTPClient / DS3231 (si usas reloj interno o externo, según el modo seleccionado)
 
 
-8. Adafruit GFX (solo si alguna librería de pantalla la requiere como dependencia)
+9. Adafruit GFX (solo si alguna librería de pantalla la requiere como dependencia)
 
 
 
