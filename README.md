@@ -98,6 +98,7 @@ During this mode, game cover playback stops and is replaced with a Matrix-style 
 | Support for other systems (e.g. SNES, Genesis) | Planned |
 | Neo Mode auto/manual scheduling     | Implemented |
 | Show/hide clock option              | Implemented |
+| juego del dia                       | Planeado |
 
 ---
 
@@ -234,6 +235,7 @@ Durante este modo, se detiene la reproducción de carátulas y se reemplaza por 
 | Mostrar otros sistemas retro          | Planeado   |
 | Programación automática del Modo Neo  | Implementado |
 | Mostrar/Ocultar reloj desde menú      | Implementado |
+| juego del dia                         | Planeado |
 
 ---
 
