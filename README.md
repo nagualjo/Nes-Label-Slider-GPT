@@ -384,49 +384,66 @@ En el archivo User_Setup.h de TFT_eSPI, asegúrate de tener bien definidos:
 
 Pines SPI, Controlador (por ejemplo, ST7796) ,Resolución ( 480x320, etc.)
 Puedes usar esta configuracion 
+## 🛠️ Configuración de la pantalla TFT (TFT_eSPI)
+
+Para que el sistema funcione correctamente con tu pantalla TFT de 4" basada en el controlador **ST7796**, es necesario configurar adecuadamente la librería [`TFT_eSPI`](https://github.com/Bodmer/TFT_eSPI). Esto se realiza editando el archivo `User_Setup.h`, dentro de la carpeta de la librería.
+
+Asegúrate de definir correctamente:
+
+- ✅ Pines SPI
+- ✅ Controlador de pantalla
+- ✅ Resolución (por ejemplo, 480x320)
+- ✅ Frecuencias SPI de escritura y lectura
+- ✅ Pines para táctil (si aplica)
+- ✅ Opciones de retroiluminación y fuentes
+
+Puedes usar esta plantilla como ejemplo de configuración:
+
+```cpp
 // ##############################################
 // 📺 Configuración para pantalla ST7796
 // ##############################################
 
-#define ST7796_DRIVER     // Define el controlador ST7796
+#define ST7796_DRIVER     // Controlador de la pantalla
 
-// 📏 Dimensiones
+// 📐 Dimensiones
 #define TFT_WIDTH  320    // Ancho en píxeles
 #define TFT_HEIGHT 480    // Alto en píxeles
 
-// 🧩 Pines SPI y control
-#define TFT_MOSI  13      // SDI (MOSI)
-#define TFT_SCLK  14      // SCK (CLK)
-#define TFT_CS    15      // Chip Select
-#define TFT_DC    2       // Data/Command
-#define TFT_RST   4       // Reset
-#define TFT_BL    32      // Retroiluminación (PWM)
+// 🧩 Pines de conexión (ESP32)
+#define TFT_MOSI  13      // Pin MOSI (SDI)
+#define TFT_SCLK  14      // Pin SCK (CLK)
+#define TFT_CS    15      // Pin Chip Select
+#define TFT_DC    2       // Pin Data/Command
+#define TFT_RST   4       // Pin RESET
+#define TFT_BL    32      // Pin de retroiluminación (PWM)
 
 // ⚡ Frecuencias SPI
-#define SPI_FREQUENCY        40000000  // 40 MHz para escritura
-#define SPI_READ_FREQUENCY   20000000  // 20 MHz para lectura (opcional)
+#define SPI_FREQUENCY        40000000   // Escritura (40 MHz)
+#define SPI_READ_FREQUENCY   20000000   // Lectura (20 MHz, opcional)
 
-// ✋ Soporte táctil (si usas touch)
+// ✋ Configuración del táctil (si lo usas)
 #define TOUCH_CS 21
-#define SPI_TOUCH_FREQUENCY  2500000   // 2.5 MHz
+#define SPI_TOUCH_FREQUENCY  2500000    // 2.5 MHz
 
-// 📝 Fuentes que se pueden cargar
+// 📝 Fuentes disponibles
 #define LOAD_GLCD     // Fuente básica (8x8)
-#define LOAD_FONT2    // Fuente pequeña (16 px alto)
-#define LOAD_FONT4    // Fuente mediana (26 px alto)
-#define LOAD_FONT6    // Fuente grande (48 px alto)
-#define LOAD_FONT7    // Fuente tipo segmentos (48 px alto)
-#define LOAD_FONT8    // Fuente extra grande (75 px alto)
-#define LOAD_GFXFF    // Fuentes Adafruit GFX (FreeFonts)
-#define SMOOTH_FONT   // Habilita fuentes suaves (anti-aliasing)
+#define LOAD_FONT2    // Pequeña (16 px)
+#define LOAD_FONT4    // Mediana (26 px)
+#define LOAD_FONT6    // Grande (48 px)
+#define LOAD_FONT7    // Segmentos (48 px)
+#define LOAD_FONT8    // Muy grande (75 px)
+#define LOAD_GFXFF    // FreeFonts de Adafruit GFX
+#define SMOOTH_FONT   // Fuentes suaves (anti-aliasing)
 
 // 💡 Retroiluminación
-#define TFT_BACKLIGHT_ON HIGH  // Define el nivel lógico para encender el LED
+#define TFT_BACKLIGHT_ON HIGH  // Nivel lógico para encender retroiluminación
 
-// 🚀 SPI por defecto
-// Se utiliza el puerto VSPI del ESP32 por defecto.
-// Para usar HSPI, puedes descomentar esta línea:
+// 🚀 Puerto SPI
+// Se usa el puerto VSPI del ESP32 por defecto.
+// Para usar HSPI, descomenta la línea:
 // #define USE_HSPI_PORT
+
 
 
 ---
