@@ -385,61 +385,48 @@ En el archivo User_Setup.h de TFT_eSPI, asegúrate de tener bien definidos:
 Pines SPI, Controlador (por ejemplo, ST7796) ,Resolución ( 480x320, etc.)
 Puedes usar esta configuracion 
 // ##############################################
-// Configuración para pantalla con controlador ST7796
+// 📺 Configuración para pantalla ST7796
 // ##############################################
 
-#define ST7796_DRIVER     // Define el controlador de la pantalla
+#define ST7796_DRIVER     // Define el controlador ST7796
 
-// Dimensiones de la pantalla
-#define TFT_WIDTH  320    // Ancho de la pantalla en píxeles
-#define TFT_HEIGHT 480    // Alto de la pantalla en píxeles
+// 📏 Dimensiones
+#define TFT_WIDTH  320    // Ancho en píxeles
+#define TFT_HEIGHT 480    // Alto en píxeles
 
-// Pines de conexión para el ESP32
-#define TFT_MOSI  13      // Pin MOSI (SDI)
-#define TFT_SCLK  14      // Pin SCK (CLK)
-#define TFT_CS    15      // Pin CS (Chip Select)
-#define TFT_DC    2       // Pin DC/RS (Data Command)
-#define TFT_RST   4       // Pin RESET
-#define TFT_BL    32      // Pin LED (control de brillo)
+// 🧩 Pines SPI y control
+#define TFT_MOSI  13      // SDI (MOSI)
+#define TFT_SCLK  14      // SCK (CLK)
+#define TFT_CS    15      // Chip Select
+#define TFT_DC    2       // Data/Command
+#define TFT_RST   4       // Reset
+#define TFT_BL    32      // Retroiluminación (PWM)
 
-// Frecuencia SPI
-#define SPI_FREQUENCY  40000000  // Frecuencia SPI para la pantalla (40 MHz)
+// ⚡ Frecuencias SPI
+#define SPI_FREQUENCY        40000000  // 40 MHz para escritura
+#define SPI_READ_FREQUENCY   20000000  // 20 MHz para lectura (opcional)
 
-// Frecuencia SPI para lectura (opcional)
-#define SPI_READ_FREQUENCY  20000000  // Frecuencia SPI para lectura (20 MHz)
+// ✋ Soporte táctil (si usas touch)
+#define TOUCH_CS 21
+#define SPI_TOUCH_FREQUENCY  2500000   // 2.5 MHz
 
-// Configuración del controlador táctil (si lo usas)
-#define TOUCH_CS 21               // Pin CS del controlador táctil
-#define SPI_TOUCH_FREQUENCY  2500000  // Frecuencia SPI para el táctil (2.5 MHz)
+// 📝 Fuentes que se pueden cargar
+#define LOAD_GLCD     // Fuente básica (8x8)
+#define LOAD_FONT2    // Fuente pequeña (16 px alto)
+#define LOAD_FONT4    // Fuente mediana (26 px alto)
+#define LOAD_FONT6    // Fuente grande (48 px alto)
+#define LOAD_FONT7    // Fuente tipo segmentos (48 px alto)
+#define LOAD_FONT8    // Fuente extra grande (75 px alto)
+#define LOAD_GFXFF    // Fuentes Adafruit GFX (FreeFonts)
+#define SMOOTH_FONT   // Habilita fuentes suaves (anti-aliasing)
 
-// ##############################################
-// Fuentes y opciones adicionales
-// ##############################################
+// 💡 Retroiluminación
+#define TFT_BACKLIGHT_ON HIGH  // Define el nivel lógico para encender el LED
 
-// Carga las fuentes necesarias
-#define LOAD_GLCD   // Fuente 1: Adafruit 8x8
-#define LOAD_FONT2  // Fuente 2: Pequeña, 16 píxeles de alto
-#define LOAD_FONT4  // Fuente 4: Mediana, 26 píxeles de alto
-#define LOAD_FONT6  // Fuente 6: Grande, 48 píxeles de alto
-#define LOAD_FONT7  // Fuente 7: Segmentos de 7, 48 píxeles de alto
-#define LOAD_FONT8  // Fuente 8: Muy grande, 75 píxeles de alto
-#define LOAD_GFXFF  // Fuentes FreeFonts de Adafruit GFX
-
-// Habilita fuentes suaves (opcional)
-#define SMOOTH_FONT
-
-// ##############################################
-// Opciones adicionales
-// ##############################################
-
-// Define el pin de control de retroiluminación (opcional)
-#define TFT_BACKLIGHT_ON HIGH  // Nivel para encender la retroiluminación (HIGH o LOW)
-
-// Usa el puerto SPI por defecto (VSPI) del ESP32
-// Si necesitas usar HSPI, descomenta la siguiente línea:
+// 🚀 SPI por defecto
+// Se utiliza el puerto VSPI del ESP32 por defecto.
+// Para usar HSPI, puedes descomentar esta línea:
 // #define USE_HSPI_PORT
-
-
 
 
 ---
