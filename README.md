@@ -35,7 +35,7 @@ This project is open to the community: anyone is welcome to join, share ideas, a
 
 | Component        | Signal        | Pin | Notes                            |
 |------------------|---------------|-----|----------------------------------|
-| **Touch Panel**  | T_IRQ         |  27  |      solving bug                            |
+| **Touch Panel**  | T_IRQ         |  27  |      solving bug strap pin                          |
 |                  | T_D0 (DOUT)   | 19  | Shared SPI MISO                  |
 |                  | T_DIN (OIN)   | 23  | Shared SPI MOSI                  |
 |                  | T_CS          | 21  |                                  |
