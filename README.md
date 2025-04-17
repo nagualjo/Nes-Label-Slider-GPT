@@ -652,7 +652,7 @@ Puedes usar esta plantilla como ejemplo de configuración:
 // Se usa el puerto VSPI del ESP32 por defecto.
 // Para usar HSPI, descomenta la línea:
 // #define USE_HSPI_PORT
-
+```
 
 
 ---
