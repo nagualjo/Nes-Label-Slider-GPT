@@ -1,3 +1,76 @@
+## 🗺️ Official Roadmap — NES Label GPT V3   ( working in a re-writing of the project )
+
+### ✅ Phase 1: Initialization and Basic Hardware  
+- Setup of TFT display with ST7796 controller  
+- Load BMP images from external SD module  
+- Brightness control via PWM (GPIO 32)  
+- Initialization of MP3-TF-16P module and basic playback  
+- Touch controller setup and touch detection
+
+---
+
+### ✅ Phase 2: Cover Navigation  
+- Sequential loading of images from SD  
+- Syncing image and song by filename or index  
+- Automatic image change every 30 seconds  
+- Manual image switch via touch  
+
+---
+
+### 🔄 Phase 3: Advanced File Management  
+- Playback of **PNG** images using `PNGdec`  
+- File extension filtering  
+- Support for multiple folders or categories  
+
+---
+
+### ✅ Phase 4: Full Audio Module  
+- Software-based volume control  
+- Mute toggle option  
+- Touch interface for volume control  
+
+---
+
+### 🧩 Phase 5: Interactive Settings Menu  
+- Touch menu with visual buttons  
+- Adjustable **image display time**  
+- Toggle **random/shuffle mode**  
+- Show/Hide **clock** from menu  
+- Activate **favorites mode** (tagging covers)  
+- Save configuration to `.ini` file on SD  
+
+---
+
+### ⏰ Phase 6: Clock and Time Features  
+- WiFi + NTP sync if available  
+- Use of physical RTC module (e.g., DS3231)  
+- Fallback mode: count time since boot  
+- **"Game of the Day"** feature (random cover fixed for 24h)
+
+---
+
+### 🧪 Phase 7: Special Modes and Extras  
+- **Neo / Matrix** visual mode (screensaver style)  
+- Display of covers from **other retro systems** (SNES, GBA, etc.)  
+- Folder/system-based navigation  
+- **Favorites gallery** (double tap to mark)  
+- Optional **retro scanline** effect  
+- Retro loading screen (if boot is slow)
+
+---
+
+### 📦 Phase 8: Final Polishing & Optimization  
+- Faster loading with image/audio buffering  
+- Error handling (corrupt image, SD not found, etc.)  
+- Auto-restart on fatal crash  
+- Final validation for **official release**
+
+---
+
+🚀 **Final Goal**: An interactive, nostalgic, touchscreen multimedia player inspired by the NES era — fully customizable and optimized for the ESP32!
+
+
+
 # NES Label GPT - V2.1
 
 **Where dreams meet pixels**
@@ -202,8 +275,80 @@ Created by [nagualjo](https://github.com/nagualjo) & ChatGPT
 [Project playlist](https://youtube.com/playlist?list=PLmfMWYH7Nj0FwavMzZCVX6lTx4F0mGqpq&si=qJpPpOD8D36XHy6z)
 
 ---
+## 🗺️ Roadmap Oficial — NES Label GPT V3, lanzamiento de nueva version, con codigo recreado desde 0 hasta superar el ya creado para la v2
 
-# NES Label GPT - V1 (Español)
+### ✅ Fase 1: Inicialización y Hardware básico  
+- Configuración de la pantalla TFT con controlador ST7796  
+- Lectura de imágenes BMP desde módulo SD externo  
+- Control de brillo con PWM (GPIO 32)  
+- Inicialización del módulo MP3-TF-16P y reproducción básica  
+- Comprobación del táctil y detección de eventos
+
+---
+
+### ✅ Fase 2: Navegación entre carátulas  
+- Carga ordenada de imágenes desde la SD  
+- Sincronización imagen + canción por nombre/índice  
+- Cambio automático de imagen cada 30 segundos  
+- Toque para pasar de imagen manualmente  
+
+---
+
+### 🔄 Fase 3: Gestión avanzada de archivos  
+- Reproducción de imágenes en formato **PNG** con `PNGdec`  
+- Filtro por extensiones válidas  
+- Soporte para múltiples carpetas o categorías  
+
+---
+
+### ✅ Fase 4: Módulo de audio completo  
+- Control de volumen por software  
+- Modo silencioso (mute)  
+- Control táctil del volumen desde la interfaz  
+
+---
+
+### 🧩 Fase 5: Menú de configuración interactivo  
+- Menú táctil con botones visuales  
+- Ajuste del **tiempo configurable** entre imágenes  
+- Activar/Desactivar **modo aleatorio (shuffle)**  
+- Mostrar/Ocultar **reloj** desde el menú  
+- Activar modo **favoritos** (etiquetar carátulas)  
+- Guardar configuraciones en archivo `.ini` en la SD  
+
+---
+
+### ⏰ Fase 6: Reloj y tiempo real  
+- Sincronización por WiFi + NTP (si hay conexión)  
+- Uso de módulo RTC (DS3231 u otro) si está presente  
+- Modo fallback: contar tiempo desde el arranque  
+- Implementación del **"Juego del día"** (carátula aleatoria fija por 24h)
+
+---
+
+### 🧪 Fase 7: Extras y modos especiales  
+- Modo visual **Neo / Matrix** como salvapantallas  
+- Mostrar carátulas de **otras consolas retro** (SNES, GBA, etc.)  
+- Navegación por carpetas o sistemas  
+- Galería de **favoritos** (doble toque para marcar)  
+- Efecto retro **scanlines** opcional  
+- Pantalla de carga retro (en caso de arranque lento)
+
+---
+
+### 📦 Fase 8: Pulido y optimización final  
+- Mejoras de velocidad de carga con buffers  
+- Gestión de errores (imagen corrupta, SD no presente, etc.)  
+- Auto-reinicio si ocurre un fallo crítico  
+- Validación final para **lanzamiento oficial**
+
+---
+
+🚀 **Objetivo final**: Un reproductor multimedia interactivo, táctil y personalizable inspirado en la estética NES, ¡para revivir la nostalgia como nunca antes!
+
+
+
+# NES Label GPT - V2 (Español)
 
 **Donde los sueños se encuentran con la nostalgia**
 
