@@ -1,15 +1,15 @@
-## 🗺️ Official Roadmap — NES Label GPT V3   ( working in a re-writing of the project )
+## 🗺️ Official Roadmap — NES Label GPT V3 (working in a re-writing of the project)
 
-### ✅ Phase 1: Initialization and Basic Hardware  
+### ✅ Phase 1: Initialization and Basic Hardware
 - Setup of TFT display with ST7796 controller  
 - Load BMP images from external SD module  
 - Brightness control via PWM (GPIO 32)  
 - Initialization of MP3-TF-16P module and basic playback  
-- Touch controller setup and touch detection
+- Touch controller setup and touch detection  
 
 ---
 
-### ✅ Phase 2: Cover Navigation  
+### ✅ Phase 2: Cover Navigation
 - Sequential loading of images from SD  
 - Syncing image and song by filename or index  
 - Automatic image change every 30 seconds  
@@ -17,21 +17,21 @@
 
 ---
 
-### 🔄 Phase 3: Advanced File Management  
+### 🔄 Phase 3: Advanced File Management
 - Playback of **PNG** images using `PNGdec`  
 - File extension filtering  
 - Support for multiple folders or categories  
 
 ---
 
-### ✅ Phase 4: Full Audio Module  
+### ✅ Phase 4: Full Audio Module
 - Software-based volume control  
 - Mute toggle option  
 - Touch interface for volume control  
 
 ---
 
-### 🧩 Phase 5: Interactive Settings Menu  
+### 🧩 Phase 5: Interactive Settings Menu
 - Touch menu with visual buttons  
 - Adjustable **image display time**  
 - Toggle **random/shuffle mode**  
@@ -41,29 +41,34 @@
 
 ---
 
-### ⏰ Phase 6: Clock and Time Features  
+### ⏰ Phase 6: Clock and Time Features
 - WiFi + NTP sync if available  
 - Use of physical RTC module (e.g., DS3231)  
 - Fallback mode: count time since boot  
-- **"Game of the Day"** feature (random cover fixed for 24h)
+- **"Game of the Day"** feature (random cover fixed for 24h)  
 
 ---
 
-### 🧪 Phase 7: Special Modes and Extras  
+### 🧪 Phase 7: Special Modes and Extras
 - **Neo / Matrix** visual mode (screensaver style)  
 - Display of covers from **other retro systems** (SNES, GBA, etc.)  
 - Folder/system-based navigation  
 - **Favorites gallery** (double tap to mark)  
 - Optional **retro scanline** effect  
-- Retro loading screen (if boot is slow)
+- Retro loading screen (if boot is slow)  
 
 ---
 
-### 📦 Phase 8: Final Polishing & Optimization  
+### 📦 Phase 8: Final Polishing & Optimization
 - Faster loading with image/audio buffering  
 - Error handling (corrupt image, SD not found, etc.)  
 - Auto-restart on fatal crash  
-- Final validation for **official release**
+- Final validation for **official release**  
+
+#### 🧠 Subphase 8.1: Visual Performance Enhancements
+- Optimized **BMP rendering using block reading**  
+- Experimental **scanline / line-by-line drawing effects**  
+- Implementation of **visual transitions** between covers (fade, slide, etc.)  
 
 ---
 
