@@ -1,196 +1,209 @@
-// NES Label GPT V2.2
+// NES Label GPT V3
 // Donde los sueños se encuentran con la realidad... ¡y ahora también con funciones avanzadas!
 // Autor: nagualjo & ChatGPT
 
-// Código optimizado e integrado con funciones completas
+// Código optimizado y rediseñado a partir de la V2.3
 
-#include <TFT_eSPI.h>
-#include <SPI.h>
-#include <FS.h>
-#include <SD.h>
-#include <EEPROM.h>
-#include <DFRobotDFPlayerMini.h>
-#include <XPT2046_Touchscreen.h>
+#define ST7796_DRIVER     // Controlador de la pantalla
 
-// Configuración de pines
-#define PIN_MP3_RX 16
-#define PIN_MP3_TX 17
-#define PIN_SD_CS 5
-#define PIN_TOUCH_CS 12
-#define PIN_BRIGHTNESS 32
-#define SCREEN_WIDTH 480
-#define SCREEN_HEIGHT 320
+#define TFT_WIDTH  320    // Ancho de la pantalla
+#define TFT_HEIGHT 480    // Alto de la pantalla
 
-TFT_eSPI tft = TFT_eSPI();
-HardwareSerial mp3Serial(1);
+#define TFT_MOSI  13      // Pin MOSI
+#define TFT_SCLK  14      // Pin SCK
+#define TFT_CS    15      // Pin CS
+#define TFT_DC    2       // Pin DC/RS
+#define TFT_RST   4       // Pin RESET
+#define TFT_BL    32      // Pin LED (control de brillo)
+
+#define SPI_FREQUENCY  40000000  // Frecuencia SPI
+
+#include <TFT_eSPI.h>          // Librería para la pantalla TFT
+#include <SPI.h>               // Librería SPI
+#include <SD.h>                // Librería para la tarjeta SD
+#include <DFRobotDFPlayerMini.h> // Librería para el módulo MP3
+
+// Pines de conexión
+#define SD_CS 5                // Pin CS para la tarjeta SD
+#define MP3_RX 16              // Pin RX para el módulo MP3
+#define MP3_TX 17              // Pin TX para el módulo MP3
+
+// Configuración de la pantalla TFT
+TFT_eSPI tft = TFT_eSPI();     // Usa la configuración de User_Setup.h
+
+// Configuración del módulo MP3
+HardwareSerial mp3Serial(1);   // UART1 para el módulo MP3
 DFRobotDFPlayerMini mp3;
 
-XPT2046_Touchscreen touch(PIN_TOUCH_CS);
+// Declaración de funciones auxiliares
+uint16_t read16(File &f);
+uint32_t read32(File &f);
 
-// Variables globales
-int currentIndex = 0;
-int numFiles = 0;
-int delayTime = 30000;
-bool shuffleMode = false;
-bool showClock = false;
-int volume = 20;
-int brightness = 200;
+// Función para ajustar el brillo de la pantalla
+void setBrightness(int brightness) {
+  if (brightness < 0) brightness = 0;       // Limitar el brillo mínimo
+  if (brightness > 255) brightness = 255;   // Limitar el brillo máximo
+  ledcWrite(0, brightness);                 // Ajustar el brillo usando PWM
+}
 
-String fileList[1000];
-unsigned long lastChange = 0;
-bool showMenu = false;
+// Función para mostrar una imagen BMP en la pantalla
+void drawBMP(const char *filename, int x, int y) {
+  File bmpFile;
+  int bmpWidth, bmpHeight; // Dimensiones de la imagen
+  uint8_t bmpDepth;        // Bits por píxel
+  uint32_t rowSize;        // Tamaño de cada fila en bytes
+  uint8_t sdbuffer[3 * 20]; // Buffer para leer datos de la SD
+  uint8_t buffidx = sizeof(sdbuffer);
+  bool goodBmp = false;    // Verifica si el archivo BMP es válido
+  bool flip = true;        // Indica si la imagen está invertida
+  int w, h, row, col;
+  uint8_t r, g, b;
 
-// Prototipos
-void loadFileList();
-void shuffleFileList();
-void drawMenu();
-void handleTouch();
-void showImage(String filename);
-void playMusic(String filename);
-void saveConfig();
-void loadConfig();
-void setBrightness(int val);
-void drawButtons();
+  // Abre el archivo BMP
+  bmpFile = SD.open(filename);
+  if (!bmpFile) {
+    Serial.print("ERROR: No se pudo abrir el archivo ");
+    Serial.println(filename);
+    return;
+  }
+
+  // Verifica el encabezado del archivo BMP
+  if (read16(bmpFile) == 0x4D42) { // BMP signature
+    read32(bmpFile);               // Tamaño del archivo
+    read32(bmpFile);               // Reservado
+    uint32_t bmpImageOffset = read32(bmpFile); // Inicio de los datos de la imagen
+    uint32_t headerSize = read32(bmpFile);
+    bmpWidth = read32(bmpFile);
+    bmpHeight = read32(bmpFile);
+    if (read16(bmpFile) == 1) { // Planos
+      bmpDepth = read16(bmpFile); // Bits por píxel
+      if ((bmpDepth == 24) && (read32(bmpFile) == 0)) { // Solo soporta BMP de 24 bits
+        goodBmp = true;
+        rowSize = (bmpWidth * 3 + 3) & ~3;
+        if (bmpHeight < 0) {
+          bmpHeight = -bmpHeight;
+          flip = false;
+        }
+
+        w = bmpWidth;
+        h = bmpHeight;
+        if ((x + w - 1) >= tft.width()) w = tft.width() - x;
+        if ((y + h - 1) >= tft.height()) h = tft.height() - y;
+
+        for (row = 0; row < h; row++) {
+          int pos = bmpImageOffset + (flip ? (bmpHeight - 1 - row) * rowSize : row * rowSize);
+          if (bmpFile.position() != pos) {
+            bmpFile.seek(pos);
+            buffidx = sizeof(sdbuffer);
+          }
+
+          for (col = 0; col < w; col++) {
+            if (buffidx >= sizeof(sdbuffer)) {
+              bmpFile.read(sdbuffer, sizeof(sdbuffer));
+              buffidx = 0;
+            }
+
+            b = sdbuffer[buffidx++];
+            g = sdbuffer[buffidx++];
+            r = sdbuffer[buffidx++];
+            tft.drawPixel(x + col, y + row, tft.color565(r, g, b));
+          }
+        }
+      }
+    }
+  }
+
+  bmpFile.close();
+  if (!goodBmp) Serial.println("ERROR: Archivo BMP no válido");
+}
+
+// Funciones auxiliares para leer datos del archivo BMP
+uint16_t read16(File &f) {
+  uint16_t result;
+  ((uint8_t *)&result)[0] = f.read(); // LSB
+  ((uint8_t *)&result)[1] = f.read(); // MSB
+  return result;
+}
+
+uint32_t read32(File &f) {
+  uint32_t result;
+  ((uint8_t *)&result)[0] = f.read(); // LSB
+  ((uint8_t *)&result)[1] = f.read();
+  ((uint8_t *)&result)[2] = f.read();
+  ((uint8_t *)&result)[3] = f.read(); // MSB
+  return result;
+}
+
+bool randomMode = false; // Variable global para activar/desactivar el modo aleatorio
+
+// Función para alternar entre modo aleatorio y secuencial
+void toggleRandomMode() {
+  randomMode = !randomMode; // Alternar el estado del modo aleatorio
+  if (randomMode) {
+    Serial.println("Modo aleatorio activado.");
+  } else {
+    Serial.println("Modo secuencial activado.");
+  }
+}
 
 void setup() {
   Serial.begin(115200);
-  EEPROM.begin(512);
-  tft.begin();
-  tft.setRotation(1);
+
+  // Configurar el pin de brillo como salida PWM
+  ledcSetup(0, 5000, 8); // Canal 0, frecuencia 5 kHz, resolución de 8 bits
+  ledcAttachPin(TFT_BL, 0); // Asignar el pin TFT_BL al canal 0
+  setBrightness(13); // Establecer un brillo inicial (50%)
+
+  // Inicializar la pantalla
+  tft.init();
+  tft.setRotation(0);
   tft.fillScreen(TFT_BLACK);
 
-  pinMode(PIN_BRIGHTNESS, OUTPUT);
-  ledcSetup(0, 5000, 8);
-  ledcAttachPin(PIN_BRIGHTNESS, 0);
-
-  setBrightness(brightness);
-
-  if (!SD.begin(PIN_SD_CS)) {
-    tft.println("Fallo en la SD");
-    return;
+  // Inicializar la tarjeta SD
+  if (!SD.begin(SD_CS)) {
+    Serial.println("ERROR: No se pudo inicializar la tarjeta SD");
+    while (true);
   }
+  Serial.println("Tarjeta SD inicializada correctamente");
 
-  mp3Serial.begin(9600, SERIAL_8N1, PIN_MP3_RX, PIN_MP3_TX);
-  if (mp3.begin(mp3Serial)) {
-    mp3.volume(volume);
+  // Inicializar el módulo MP3
+  mp3Serial.begin(9600, SERIAL_8N1, MP3_RX, MP3_TX);
+  if (!mp3.begin(mp3Serial)) {
+    Serial.println("ERROR: No se pudo inicializar el módulo MP3");
+    while (true);
   }
-
-  touch.begin();
-  loadConfig();
-  loadFileList();
-  if (shuffleMode) shuffleFileList();
-
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setTextColor(TFT_GREEN);
-  tft.setCursor(10, 10);
-  tft.println("NES Label GPT V2");
-  delay(2000);
-  tft.fillScreen(TFT_BLACK);
+  mp3.volume(4); // Ajustar volumen
+  //mp3.play(8);    // Reproducir el primer archivo MP3
 }
 
 void loop() {
-  handleTouch();
+  for (int i = 1; i <= 811; i++) {
+    int index;
 
-  if (showMenu) {
-    drawMenu();
-    delay(100);
-    return;
-  }
-
-  if (millis() - lastChange > delayTime) {
-    String base = fileList[currentIndex];
-    showImage("/covers/" + base + ".png");
-    playMusic("/music/" + base + ".mp3");
-
-    currentIndex++;
-    if (currentIndex >= numFiles) currentIndex = 0;
-    lastChange = millis();
-  }
-}
-
-void loadFileList() {
-  File root = SD.open("/covers");
-  numFiles = 0;
-  while (true) {
-    File entry = root.openNextFile();
-    if (!entry) break;
-    String name = entry.name();
-    if (name.endsWith(".png")) {
-      name.replace("/covers/", "");
-      name.replace(".png", "");
-      fileList[numFiles++] = name;
+    // Seleccionar el índice según el modo
+    if (randomMode) {
+      index = random(1, 812); // Generar un índice aleatorio entre 1 y 811
+    } else {
+      index = i; // Usar el índice secuencial
     }
-    entry.close();
+
+    char imageFile[15]; // Buffer para el nombre de la imagen
+    char audioFile[15]; // Buffer para el nombre del archivo MP3
+
+    // Generar el nombre del archivo de audio
+    sprintf(audioFile, "%d.mp3", index); // Por ejemplo, "1.mp3"
+    Serial.print("Reproduciendo: ");
+    Serial.println(audioFile);
+
+    // Reproducir el archivo MP3
+    mp3.play(index); // Reproduce el archivo MP3 correspondiente
+
+    // Generar el nombre del archivo de imagen
+    sprintf(imageFile, "/%d.bmp", index); // Por ejemplo, "/1.bmp"
+    Serial.print("Mostrando: ");
+    Serial.println(imageFile);
+    drawBMP(imageFile, 0, 0); // Muestra la imagen en la pantalla
+
+    delay(20000); // Espera 20 segundos antes de mostrar la siguiente imagen
   }
-}
-
-void shuffleFileList() {
-  for (int i = numFiles - 1; i > 0; i--) {
-    int j = random(0, i + 1);
-    String temp = fileList[i];
-    fileList[i] = fileList[j];
-    fileList[j] = temp;
-  }
-}
-
-void showImage(String filename) {
-  // Aquí iría la función de mostrar la imagen desde SD
-  tft.fillScreen(TFT_BLACK);
-  tft.setCursor(20, 150);
-  tft.println("Mostrando: " + filename);
-}
-
-void playMusic(String filename) {
-  mp3.stop();
-  mp3.playMp3Folder(filename.c_str());
-}
-
-void handleTouch() {
-  if (touch.touched()) {
-    TS_Point p = touch.getPoint();
-    if (p.x < 100 && p.y < 100) {
-      showMenu = !showMenu;
-      delay(500);
-    }
-  }
-}
-
-void drawMenu() {
-  tft.fillScreen(TFT_DARKGREY);
-  drawButtons();
-}
-
-void drawButtons() {
-  tft.fillRect(20, 20, 200, 40, TFT_BLUE);
-  tft.setCursor(30, 30);
-  tft.setTextColor(TFT_WHITE);
-  tft.print("Brillo: "); tft.print(brightness);
-
-  tft.fillRect(20, 70, 200, 40, TFT_GREEN);
-  tft.setCursor(30, 80);
-  tft.print("Volumen: "); tft.print(volume);
-
-  tft.fillRect(20, 120, 200, 40, TFT_RED);
-  tft.setCursor(30, 130);
-  tft.print("Aleatorio: "); tft.print(shuffleMode ? "Sí" : "No");
-
-  // Aquí podrías añadir lógica para que el toque en estas zonas cambie valores
-}
-
-void saveConfig() {
-  EEPROM.write(0, shuffleMode);
-  EEPROM.write(1, volume);
-  EEPROM.write(2, brightness);
-  EEPROM.commit();
-}
-
-void loadConfig() {
-  shuffleMode = EEPROM.read(0);
-  volume = EEPROM.read(1);
-  brightness = EEPROM.read(2);
-}
-
-void setBrightness(int val) {
-  ledcWrite(0, val);
 }
